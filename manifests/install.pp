@@ -18,11 +18,12 @@
 class couchbase::install ( 
   $version = $couchbase::params::version,
 ) {
-  package {'couchbase-server':
+  package {'couchbase-server-enterprise':
     ensure   => installed,
-    name     => 'couchbase-server',
-    provider => yum,
+    name     => 'couchbase-server-enterprise',
+    provider => rpm,
     source   => 'http://packages.couchbase.com/releases/2.1.0/couchbase-server-enterprise_x86_64_2.1.0.rpm',
-    
+    require  => Package['openssl098e'],
   }
+  package {'openssl098e': }
 }
