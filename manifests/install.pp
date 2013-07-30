@@ -20,7 +20,7 @@ class couchbase::install (
 ) {
   package {'couchbase-server-enterprise':
     ensure   => installed,
-    name     => 'couchbase-server-enterprise',
+    name     => 'couchbase-server',
     provider => rpm,
     source   => 'http://packages.couchbase.com/releases/2.1.0/couchbase-server-enterprise_x86_64_2.1.0.rpm',
     require  => Package['openssl098e'],
