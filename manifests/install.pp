@@ -15,8 +15,14 @@
 #
 # Copyright 2013 Justice London, unless otherwise noted.
 #
-class couchbase::install ( $version = latest, ) {
+class couchbase::install ( 
+  $version = $couchbase::params::version,
+) {
   package {'couchbase-server':
-    ensure => $version
+    ensure   => installed,
+    name     => 'couchbase-server',
+    provider => yum,
+    source   => 'http://packages.couchbase.com/releases/2.1.0/couchbase-server-enterprise_x86_64_2.1.0.rpm',
+    
   }
 }
