@@ -63,7 +63,7 @@ class couchbase::config (
     path      => ['/usr/local/bin', '/usr/bin/', '/sbin', '/bin', '/usr/sbin',
                   '/opt/couchbase/bin'],
     command   => 'couchbase-cluster-setup.sh',
-    creates   => '/opt/couchbase/var/run/.installed',
+    creates   => '/opt/couchbase/var/.installed',
     require   => [ Concat[$couchbase::params::cluster_script], Exec['couchbase-init'] ],
     returns   => [0, 2],
     logoutput => false
