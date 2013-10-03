@@ -35,7 +35,7 @@ class couchbase::config (
   exec { 'couchbase-init':
     path      => ['/opt/couchbase/bin', '/usr/bin', '/bin', '/sbin', '/usr/sbin' ],
     command   => "couchbase-cli cluster-init -c localhost:8091 --cluster-init-username=${user} --cluster-init-password='${password}' --cluster-init-port=8091 --cluster-init-ramsize=${size}",
-    creates   => '/opt/couchbase/var/lib/couchbase/remote_clusters_cache',
+    creates   => '/opt/couchbase/var/lib/couchbase/remote_clusters_cache_v2',
     require   => [ Class['couchbase::install'] ],
     logoutput => true,
     tries     => 3,
