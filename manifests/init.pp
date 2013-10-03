@@ -45,7 +45,7 @@ class couchbase
   $size         = 1024,
   $user         = 'couchbase',
   $password     = 'password',
-  $version      = latest,
+  $version      = $couchbase::params::version,
   $nodename     = $::fqdn,
   $server_group = 'default',
 ) {

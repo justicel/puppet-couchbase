@@ -14,5 +14,5 @@
 class couchbase::params {
 
   $cluster_script = '/usr/local/bin/couchbase-cluster-setup.sh'
-
+  $version        = '2.2.0'
 }
