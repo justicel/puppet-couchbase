@@ -15,4 +15,13 @@ class couchbase::params {
 
   $cluster_script = '/usr/local/bin/couchbase-cluster-setup.sh'
   $version        = '2.2.0'
+
+  case $osfamily {
+    Redhat: {
+      $openssl_package = "openssl098e"
+    }
+    Debian: {
+      $openssl_package = "openssl"
+    }
+  }
 }
