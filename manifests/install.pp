@@ -23,7 +23,7 @@ class couchbase::install (
   package {'couchbase-server-enterprise':
     ensure   => installed,
     name     => 'couchbase-server',
-    provider => $couchbase::params::installer
+    provider => $couchbase::params::installer,
     source   => "http://packages.couchbase.com/releases/${version}/couchbase-server-enterprise_${version}_x86_64.${couchbase::params::pkgtype}",
     require  => Package[$couchbase::params::openssl_package],
   }
