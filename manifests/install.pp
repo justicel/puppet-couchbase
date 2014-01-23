@@ -20,11 +20,20 @@ class couchbase::install (
 ) {
   include couchbase::params
 
+  $pkgname   = "couchbase-server-enterprise_${version}_x86_64.${couchbase::params::pkgtype}"
+  $pkgsource = "http://packages.couchbase.com/releases/${version}/${pkgname}"
+
+  exec { 'download_couchbase':
+    command => "curl -o /tmp/${pkgname} ${pkgsource}",
+    creates => "/tmp/${pkgname}",
+    path    => ['/usr/bin','/usr/sbin','/bin','/sbin'],
+  }
+
   package {'couchbase-server-enterprise':
     ensure   => installed,
     name     => 'couchbase-server',
     provider => $couchbase::params::installer,
-    source   => "http://packages.couchbase.com/releases/${version}/couchbase-server-enterprise_${version}_x86_64.${couchbase::params::pkgtype}",
+    source   => "/tmp/couchbase-server-enterprise_${version}_x86_64.${couchbase::params::pkgtype}",
     require  => Package[$couchbase::params::openssl_package],
   }
 
