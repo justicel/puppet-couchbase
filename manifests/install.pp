@@ -18,12 +18,17 @@
 class couchbase::install ( 
   $version = $couchbase::params::version,
 ) {
+  include couchbase::params
+
   package {'couchbase-server-enterprise':
     ensure   => installed,
     name     => 'couchbase-server',
-    provider => rpm,
-    source   => "http://packages.couchbase.com/releases/${version}/couchbase-server-enterprise_${version}_x86_64.rpm",
+    provider => $couchbase::params::installer
+    source   => "http://packages.couchbase.com/releases/${version}/couchbase-server-enterprise_${version}_x86_64.${couchbase::params::pkgtype}",
     require  => Package[$couchbase::params::openssl_package],
   }
-  package {$couchbase::params::openssl_package: }
+
+  if ! defined(Package[$couchbase::params::openssl_package]) {
+    package {$couchbase::params::openssl_package: }
+  }
 }

@@ -18,10 +18,14 @@ class couchbase::params {
 
   case $osfamily {
     Redhat: {
-      $openssl_package = "openssl098e"
+      $openssl_package = 'openssl098e'
+      $installer       = 'rpm'
+      $pkgtype         = 'rpm'
     }
     Debian: {
-      $openssl_package = "openssl"
+      $openssl_package = 'openssl'
+      $installer       = 'dpkg'
+      $pkgtype         = 'deb'
     }
   }
 }
