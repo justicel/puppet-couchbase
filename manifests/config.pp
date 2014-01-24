@@ -38,7 +38,7 @@ class couchbase::config (
     creates   => '/opt/couchbase/var/lib/couchbase/remote_clusters_cache_v2',
     require   => [ Class['couchbase::install'] ],
     logoutput => true,
-    tries     => 3,
+    tries     => 5,
     try_sleep => 10,
   }
 
