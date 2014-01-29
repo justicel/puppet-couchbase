@@ -45,10 +45,10 @@ class couchbase
   $size         = 1024,
   $user         = 'couchbase',
   $password     = 'password',
-  $version      = $couchbase::params::version,
+  $version      = $::couchbase::params::version,
   $nodename     = $::fqdn,
   $server_group = 'default',
-) {
+) inherits ::couchbase::params {
 
   #Define initialized node as a couchbase node (This will always be true
   #so this is a safe assumption to make.
