@@ -27,6 +27,19 @@ Create a couchbase bucket (Note the user/password)::
         replica  => 1
     }
 
+Install the SDK for your language (currently supported ruby and python)::
+
+    couchbase::client { 'ruby': }
+
+Using it with an unsupported language will install the libcouchbase-devel and 
+libcouchbase2-libevent which are required for any other SDK. So for example if you want
+to install your php client you should use this to install the required libs and then 
+install the php pecl couchbase extension using another module. Don't forget to define 
+your relationships which in the case of module example42/php could look like::
+
+    Class['Couchbase'] -> Couchbase::Client <| |> -> Class['Php'] -> Php::Pecl::Module <| |>
+
+	
 Notes
 -----
 

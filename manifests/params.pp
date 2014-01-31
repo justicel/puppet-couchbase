@@ -13,19 +13,24 @@
 #
 class couchbase::params {
 
-  $cluster_script = '/usr/local/bin/couchbase-cluster-setup.sh'
-  $version        = '2.2.0'
+  $cluster_script      = '/usr/local/bin/couchbase-cluster-setup.sh'
+  $version             = '2.2.0'
+  $client_package      = 'libcouchbase2-libevent'
 
   case $osfamily {
-    Redhat: {
-      $openssl_package = 'openssl098e'
-      $installer       = 'rpm'
-      $pkgtype         = 'rpm'
+    /(?i:centos|redhat|scientific)/: {
+      $openssl_package     = 'openssl098e'
+      $installer           = 'rpm'
+      $pkgtype             = 'rpm'
+	  $development_package = 'libcouchbase-devel'
+	  $repository          = 'redhat'
     }
-    Debian: {
-      $openssl_package = 'openssl'
-      $installer       = 'dpkg'
-      $pkgtype         = 'deb'
+    default: {
+      $openssl_package     = 'openssl'
+      $installer           = 'dpkg'
+      $pkgtype             = 'deb'
+	  $development_package = 'libcouchbase-dev'
+	  $repository          = 'debian'
     }
   }
 }
