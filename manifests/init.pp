@@ -46,6 +46,7 @@ class couchbase
   $user         = 'couchbase',
   $password     = 'password',
   $version      = $::couchbase::params::version,
+  $edition      = $::couchbase::params::edition,
   $nodename     = $::fqdn,
   $server_group = 'default',
 ) inherits ::couchbase::params {
@@ -59,9 +60,12 @@ class couchbase
     password     => $password,
   }
 
-  class {'couchbase::install':
-    version => $version
-  } ->
+  class {'couchbase::install': 
+    version      => $version,
+    edition      => $edition,
+  } 
+
+  ->
 
   class {'couchbase::config':
     size         => $size,

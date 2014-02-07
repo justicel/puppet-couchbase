@@ -16,11 +16,20 @@
 # Copyright 2013 Justice London, unless otherwise noted.
 #
 class couchbase::install ( 
-  $version = $couchbase::params::version,
+  $version = $couchbase::version,
+  $edition = $couchbase::edition,
 ) {
   include couchbase::params
 
-  $pkgname   = "couchbase-server-enterprise_${version}_x86_64.${couchbase::params::pkgtype}"
+  $pkgname = $edition ? {
+        'enterprise'  => "couchbase-server-enterprise_${version}_x86_64.${couchbase::params::pkgtype}",
+        'community'   => "couchbase-server-community_x86_64_${version}.${couchbase::params::pkgtype}",
+        default       => "couchbase-server-enterprise_${version}_x86_64.${couchbase::params::pkgtype}",
+    }
+
+  notify {"Downloading ${pkgname} package":}
+
+
   $pkgsource = "http://packages.couchbase.com/releases/${version}/${pkgname}"
 
   exec { 'download_couchbase':
@@ -29,11 +38,11 @@ class couchbase::install (
     path    => ['/usr/bin','/usr/sbin','/bin','/sbin'],
   }
 
-  package {'couchbase-server-enterprise':
+  package {'couchbase-server':
     ensure   => installed,
     name     => 'couchbase-server',
     provider => $couchbase::params::installer,
-    source   => "/tmp/couchbase-server-enterprise_${version}_x86_64.${couchbase::params::pkgtype}",
+    source   => "/tmp/${pkgname}",
     require  => Package[$couchbase::params::openssl_package],
   }
 
