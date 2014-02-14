@@ -60,6 +60,13 @@ class couchbase
     password     => $password,
   }
 
+  anchor {
+    'couchbase::begin':;
+    'couchbase::end':;
+  }
+
+  Anchor['couchbase::begin'] ->
+
   class {'couchbase::install': 
     version      => $version,
     edition      => $edition,
@@ -72,7 +79,13 @@ class couchbase
     user         => $user,
     password     => $password,
     server_group => $server_group,
-  } ->
+  } 
+  
+  ->
 
   class {'couchbase::service':}
+
+  ->
+  
+  Anchor['couchbase::end']
 }
