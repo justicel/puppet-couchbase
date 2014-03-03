@@ -49,6 +49,13 @@ define couchbase::bucket (
   $type            = 'memcached',
   $replica         = 1,
   $bucket_password = ''
+  $port     = 8091,
+  $size     = 1024,
+  $user     = 'couchbase',
+  $password = 'password',
+  $type     = 'memcached',
+  $replica  = 1,
+  $flush    = 0,
 ) {
 
   # all this has to be done before we can create buckets.
@@ -56,10 +63,12 @@ define couchbase::bucket (
   Class['couchbase::config'] -> Couchbase::Bucket[$title]
   Class['couchbase::service'] -> Couchbase::Bucket[$title]
 
+
+
   exec {"bucket-create-${title}":
     path      => ['/opt/couchbase/bin/', '/usr/bin/', '/bin', '/sbin', '/usr/sbin'],
-    command   => "couchbase-cli bucket-create -c localhost -u ${user} -p '${password}' --bucket=${title} --bucket-type=${type} --bucket-ramsize=${size} --bucket-port=${port} --bucket-replica=${replica} --bucket-password='${bucket_password}'",
-    unless    => "couchbase-cli bucket-list -c localhost -u ${user} -p '${password}' | grep ${title}",
+    command   => "couchbase-cli bucket-create -c localhost -u ${user} -p '${password}' --bucket=${title} --bucket-type=${type} --bucket-ramsize=${size} --bucket-port=${port} --bucket-replica=${replica} --enable-flush=${flush} --bucket-password='${bucket_password}'",
+	  unless    => "couchbase-cli bucket-list -c localhost -u ${user} -p '${password}' | grep ${title}",
     require   => Class['couchbase::config'],
     returns   => [0, 2],
     logoutput => true

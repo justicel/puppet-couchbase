@@ -25,8 +25,8 @@
 
 class couchbase::config (
   $size         = 1024,
-  $user         = 'couchbase',
-  $password     = 'password',
+  $user         = "$couchbase::user",
+  $password     = "$couchbase::password",
   $server_group = 'default',
 ) {
 
@@ -34,7 +34,7 @@ class couchbase::config (
 
   exec { 'couchbase-init':
     path      => ['/opt/couchbase/bin', '/usr/bin', '/bin', '/sbin', '/usr/sbin' ],
-    command   => "couchbase-cli cluster-init -c localhost:8091 --cluster-init-username=${user} --cluster-init-password='${password}' --cluster-init-port=8091 --cluster-init-ramsize=${size}",
+    command   => "couchbase-cli cluster-init -c localhost:8091 --cluster-init-username=${user} --cluster-init-password='${password}' --cluster-init-port=8091 --cluster-init-ramsize=${size} -u ${user} -p ${password}",
     creates   => '/opt/couchbase/var/lib/couchbase/remote_clusters_cache_v2',
     require   => [ Class['couchbase::install'] ],
     logoutput => true,
@@ -62,11 +62,12 @@ class couchbase::config (
   exec { 'couchbase-cluster-setup':
     path      => ['/usr/local/bin', '/usr/bin/', '/sbin', '/bin', '/usr/sbin',
                   '/opt/couchbase/bin'],
+    cwd       => '/usr/local/bin',              
     command   => 'couchbase-cluster-setup.sh',
     creates   => '/opt/couchbase/var/.installed',
     require   => [ Concat[$couchbase::params::cluster_script], Exec['couchbase-init'] ],
     returns   => [0, 2],
-    logoutput => false
+    logoutput => true,
   }
 
 }
