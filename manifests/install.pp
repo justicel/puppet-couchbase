@@ -27,9 +27,6 @@ class couchbase::install (
         default       => "couchbase-server-enterprise_${version}_x86_64.${couchbase::params::pkgtype}",
     }
 
-  notify {"Downloading ${pkgname} package":}
-
-
   $pkgsource = "http://packages.couchbase.com/releases/${version}/${pkgname}"
 
   exec { 'download_couchbase':
