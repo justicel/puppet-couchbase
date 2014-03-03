@@ -41,6 +41,7 @@ class couchbase::install (
     provider => $couchbase::params::installer,
     source   => "/tmp/${pkgname}",
     require  => Package[$couchbase::params::openssl_package],
+    notify   => Exec['couchbase-init'],
   }
 
   if ! defined(Package[$couchbase::params::openssl_package]) {
