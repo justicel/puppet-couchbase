@@ -1,5 +1,5 @@
 name	'jlondon-couchbase'
-version	'0.0.4'
+version	'0.0.5'
 source  'UNKNOWN'
 author  'Justice London'
 license 'Apache License, Version 2.0'
