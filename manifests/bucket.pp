@@ -48,22 +48,14 @@ define couchbase::bucket (
   $password        = 'password',
   $type            = 'memcached',
   $replica         = 1,
-  $bucket_password = ''
-  $port     = 8091,
-  $size     = 1024,
-  $user     = 'couchbase',
-  $password = 'password',
-  $type     = 'memcached',
-  $replica  = 1,
-  $flush    = 0,
+  $bucket_password = '',
+  $flush           = 0,
 ) {
 
   # all this has to be done before we can create buckets.
   Class['couchbase::install'] -> Couchbase::Bucket[$title]
   Class['couchbase::config'] -> Couchbase::Bucket[$title]
   Class['couchbase::service'] -> Couchbase::Bucket[$title]
-
-
 
   exec {"bucket-create-${title}":
     path      => ['/opt/couchbase/bin/', '/usr/bin/', '/bin', '/sbin', '/usr/sbin'],
