@@ -48,7 +48,7 @@ define couchbase::bucket (
   $password        = 'password',
   $type            = 'memcached',
   $replica         = 1,
-  $bucket_password = '',
+  $bucket_password = undef,
   $flush           = 0,
 ) {
 
@@ -57,9 +57,18 @@ define couchbase::bucket (
   Class['couchbase::config'] -> Couchbase::Bucket[$title]
   Class['couchbase::service'] -> Couchbase::Bucket[$title]
 
+  #Whether or not to use a bucket password. This probably can use a selector or similar.
+  $create_defaults = "-u ${user} -p '${password}' --bucket=${title} --bucket-type=${type} --bucket-ramsize=${size} --bucket-port=${port} --bucket-replica=${replica} --enable-flush=${flush}"
+  if $bucket_password {
+    $create_command = "${create_defaults} --bucket-password='${bucket_password}'"
+  }
+  else {
+    $create_command = $create_defaults
+  }
+
   exec {"bucket-create-${title}":
     path      => ['/opt/couchbase/bin/', '/usr/bin/', '/bin', '/sbin', '/usr/sbin'],
-    command   => "couchbase-cli bucket-create -c localhost -u ${user} -p '${password}' --bucket=${title} --bucket-type=${type} --bucket-ramsize=${size} --bucket-port=${port} --bucket-replica=${replica} --enable-flush=${flush} --bucket-password='${bucket_password}'",
+    command   => "couchbase-cli bucket-create -c localhost ${create_command}",
 	  unless    => "couchbase-cli bucket-list -c localhost -u ${user} -p '${password}' | grep ${title}",
     require   => Class['couchbase::config'],
     returns   => [0, 2],
