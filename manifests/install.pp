@@ -23,7 +23,7 @@ class couchbase::install (
 
   $pkgname = $edition ? {
         'enterprise'  => "couchbase-server-enterprise_${version}_x86_64.${couchbase::params::pkgtype}",
-        'community'   => "couchbase-server-community_x86_64_${version}.${couchbase::params::pkgtype}",
+        'community'   => "couchbase-server-community_${version}_x86_64.${couchbase::params::pkgtype}",
         default       => "couchbase-server-enterprise_${version}_x86_64.${couchbase::params::pkgtype}",
     }
 
