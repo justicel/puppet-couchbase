@@ -19,7 +19,7 @@
 # [*server_group*]
 # The group in which this couchbase server will live. Set to 'default'
 # [*install_method*]
-# The method used to install couchbase, 'curl' or 'package'
+# The method used to install couchbase, 'curl' or 'package'. Default is 'curl'
 #
 # === Examples
 #
