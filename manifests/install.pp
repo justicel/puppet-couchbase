@@ -15,7 +15,7 @@
 #
 # Copyright 2013 Justice London, unless otherwise noted.
 #
-class couchbase::install ( 
+class couchbase::install (
   $version = $couchbase::version,
   $edition = $couchbase::edition,
 ) {
@@ -44,7 +44,6 @@ class couchbase::install (
     notify   => Exec['couchbase-init'],
   }
 
-  if ! defined(Package[$couchbase::params::openssl_package]) {
-    package {$couchbase::params::openssl_package: }
-  }
+  ensure_packages($couchbase::params::openssl_package)
+
 }
