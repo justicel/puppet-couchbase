@@ -18,6 +18,7 @@
 class couchbase::install (
   $version = $couchbase::version,
   $edition = $couchbase::edition,
+  $method  = $couchbase::install_method,
 ) {
   include couchbase::params
 
@@ -29,19 +30,33 @@ class couchbase::install (
 
   $pkgsource = "http://packages.couchbase.com/releases/${version}/${pkgname}"
 
-  exec { 'download_couchbase':
-    command => "curl -o /tmp/${pkgname} ${pkgsource}",
-    creates => "/tmp/${pkgname}",
-    path    => ['/usr/bin','/usr/sbin','/bin','/sbin'],
-  }
-
-  package {'couchbase-server':
-    ensure   => installed,
-    name     => 'couchbase-server',
-    provider => $couchbase::params::installer,
-    source   => "/tmp/${pkgname}",
-    require  => [Package[$couchbase::params::openssl_package], Exec['download_couchbase']],
-    notify   => Exec['couchbase-init'],
+  case $method {
+    'curl': {
+      exec { 'download_couchbase':
+        command => "curl -o /tmp/${pkgname} ${pkgsource}",
+        creates => "/tmp/${pkgname}",
+        path    => ['/usr/bin','/usr/sbin','/bin','/sbin'],
+      }
+      package {'couchbase-server':
+        ensure   => installed,
+        name     => 'couchbase-server',
+        notify   => Exec['couchbase-init'],
+        provider => $couchbase::params::installer,
+        require  => [Package[$couchbase::params::openssl_package], Exec['download_couchbase']],
+        source   => "/tmp/${pkgname}",
+      }
+    }
+    'package': {
+      package {'couchbase-server':
+        ensure   => $couchbase::version,
+        name     => 'couchbase-server',
+        notify   => Exec['couchbase-init'],
+        require  => Package[$couchbase::params::openssl_package],
+      }
+    }
+    default: {
+      fail ("$module_name install_method must be 'package' or 'curl'")
+    }
   }
 
   ensure_packages($couchbase::params::openssl_package)
