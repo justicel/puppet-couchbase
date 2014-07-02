@@ -33,8 +33,8 @@ class couchbase::install (
   case $method {
     'curl': {
       exec { 'download_couchbase':
-        command => "curl -o /tmp/${pkgname} ${pkgsource}",
-        creates => "/tmp/${pkgname}",
+        command => "curl -o /opt/${pkgname} ${pkgsource}",
+        creates => "/opt/${pkgname}",
         path    => ['/usr/bin','/usr/sbin','/bin','/sbin'],
       }
       package {'couchbase-server':
@@ -43,7 +43,7 @@ class couchbase::install (
         notify   => Exec['couchbase-init'],
         provider => $couchbase::params::installer,
         require  => [Package[$couchbase::params::openssl_package], Exec['download_couchbase']],
-        source   => "/tmp/${pkgname}",
+        source   => "/opt/${pkgname}",
       }
     }
     'package': {
