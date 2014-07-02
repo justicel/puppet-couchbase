@@ -31,15 +31,15 @@ Install the SDK for your language (currently supported ruby and python)::
 
     couchbase::client { 'ruby': }
 
-Using it with an unsupported language will install the libcouchbase-devel and 
+Using it with an unsupported language will install the libcouchbase-devel and
 libcouchbase2-libevent which are required for any other SDK. So for example if you want
-to install your php client you should use this to install the required libs and then 
-install the php pecl couchbase extension using another module. Don't forget to define 
+to install your php client you should use this to install the required libs and then
+install the php pecl couchbase extension using another module. Don't forget to define
 your relationships which in the case of module example42/php could look like::
 
     Class['Couchbase'] -> Couchbase::Client <| |> -> Class['Php'] -> Php::Pecl::Module <| |>
 
-	
+
 Notes
 -----
 
@@ -49,11 +49,11 @@ What this means is that transparently you can add nodes to a Couchbase server gr
 This could be done via auto-scaling or other methods, as long as they all are assigned to
 the same server group.
 
-Due to this, the module requires the mentioned puppetdb services as well as storeconfigs
-and concat.
+Due to this, the module requires the mentioned puppetdb services as well as storeconfigs,
+puppetlabs/concat and puppetlabs/stdlib.
 
 TODO
 ----
 
 + Add the ability to do cleanup of nodes from cluster
-+ Build tests into module 
++ Build tests into module
