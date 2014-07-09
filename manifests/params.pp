@@ -20,14 +20,14 @@ class couchbase::params {
 
   case $osfamily {
     /(?i:centos|redhat|scientific)/: {
-      $openssl_package     = 'openssl098e'
+      $openssl_package     = ['openssl098e']
       $installer           = 'rpm'
       $pkgtype             = 'rpm'
 	  $development_package = 'libcouchbase-devel'
 	  $repository          = 'redhat'
     }
     default: {
-      $openssl_package     = 'openssl'
+      $openssl_package     = ['openssl']
       $installer           = 'dpkg'
       $pkgtype             = 'deb'
 	  $development_package = 'libcouchbase-dev'

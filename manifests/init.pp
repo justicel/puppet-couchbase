@@ -18,6 +18,8 @@
 # set to the fqdn of the server the module is being launched on
 # [*server_group*]
 # The group in which this couchbase server will live. Set to 'default'
+# [*install_method*]
+# The method used to install couchbase, 'curl' or 'package'. Default is 'curl'
 #
 # === Examples
 #
@@ -42,13 +44,14 @@
 
 class couchbase
 (
-  $size         = 1024,
-  $user         = 'couchbase',
-  $password     = 'password',
-  $version      = $::couchbase::params::version,
-  $edition      = $::couchbase::params::edition,
-  $nodename     = $::fqdn,
-  $server_group = 'default',
+  $size           = 1024,
+  $user           = 'couchbase',
+  $password       = 'password',
+  $version        = $::couchbase::params::version,
+  $edition        = $::couchbase::params::edition,
+  $nodename       = $::fqdn,
+  $server_group   = 'default',
+  $install_method = 'curl',
 ) inherits ::couchbase::params {
 
   #Define initialized node as a couchbase node (This will always be true
@@ -67,10 +70,10 @@ class couchbase
 
   Anchor['couchbase::begin'] ->
 
-  class {'couchbase::install': 
+  class {'couchbase::install':
     version      => $version,
     edition      => $edition,
-  } 
+  }
 
   ->
 
@@ -79,13 +82,13 @@ class couchbase
     user         => $user,
     password     => $password,
     server_group => $server_group,
-  } 
-  
+  }
+
   ->
 
   class {'couchbase::service':}
 
   ->
-  
+
   Anchor['couchbase::end']
 }
