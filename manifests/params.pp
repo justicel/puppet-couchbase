@@ -23,8 +23,9 @@ class couchbase::params {
       $openssl_package     = ['openssl098e']
       $installer           = 'rpm'
       $pkgtype             = 'rpm'
-	  $development_package = 'libcouchbase-devel'
-	  $repository          = 'redhat'
+  	  $development_package = 'libcouchbase-devel'
+  	  $repository          = 'redhat'
+      $osname              = 'centos6'
     }
     default: {
       $openssl_package     = ['openssl']

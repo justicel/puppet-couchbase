@@ -52,10 +52,12 @@ class couchbase::config (
     group => '0',
     mode  => '0655',
   }
+
   concat::fragment { '00_script_header':
     target  => $couchbase::params::cluster_script,
     order   => '01',
     content => template('couchbase/couchbase-cluster-setup.sh.erb'),
+    notify => Exec['couchbase-cluster-setup'],
   }
   #Collect cluster node entries for config
   Couchbase::Couchbasenode <<| server_group == $server_group |>> ->
@@ -65,10 +67,11 @@ class couchbase::config (
                   '/opt/couchbase/bin'],
     cwd       => '/usr/local/bin',              
     command   => 'couchbase-cluster-setup.sh',
-    creates   => '/opt/couchbase/var/.installed',
+    #creates   => '/opt/couchbase/var/.installed',
     require   => [ Concat[$couchbase::params::cluster_script], Exec['couchbase-init'] ],
     returns   => [0, 2],
     logoutput => true,
+    refreshonly => true,
   }
 
 }

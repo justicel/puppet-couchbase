@@ -70,7 +70,7 @@ define couchbase::bucket (
   exec {"bucket-create-${bucketname}":
     path      => ['/opt/couchbase/bin/', '/usr/bin/', '/bin', '/sbin', '/usr/sbin'],
     command   => "couchbase-cli bucket-create -c 127.0.0.1 ${create_command}",
-	unless    => "couchbase-cli bucket-list -c 127.0.0.1 -u ${user} -p '${password}' | grep ${bucketname}",
+	  unless    => "couchbase-cli bucket-list -c 127.0.0.1 -u ${user} -p '${password}' | grep ${bucketname}",
     require   => Class['couchbase::config'],
     returns   => [0, 2],
     logoutput => true
