@@ -1,0 +1,5 @@
+couchbase-cli cluster-init -c localhost:8091 \
+--cluster-init-username=<%= @user %> --cluster-init-password='<%= @password %>' \
+--cluster-init-port=8091 \
+--cluster-init-ramsize=<%= @size %> \
+-u <%= @user %> -p <%= @password %>

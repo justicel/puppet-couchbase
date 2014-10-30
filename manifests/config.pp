@@ -26,27 +26,85 @@
 class couchbase::config (
   $size         = 1024,
   $user         = "$couchbase::user",
-  $password     = "$couchbase::password",
+  $password     = "$couchbase::password",  
   $server_group = 'default',
+  $ensure       = $couchbase::ensure,
 ) {
 
-  include couchbase::params 
+  include couchbase::params
+
+  # Just in case, include concat setup
+  include concat::setup
+
+  
+  # Intitialize a script file
+  concat { $couchbase::params::node_init_script:
+    owner => '0',
+    group => '0',
+    mode  => '0655',
+  }
+
+
+  # Node_init (configure data directory location, etc - be careful to change it will destroy current data)
+  if $ensure == present {    
+    concat::fragment { "${server_group}_couchbase_server_${name}_node_init":
+        order   => "15-${server_group}-${server_name}-node-init",
+        target  => $couchbase::params::node_init_script,
+        content => template('couchbase/couchbasenode_init.erb'),        
+    }
+  }
+  else {
+     concat::fragment { "${server_group}_couchbase_server_${name}_node_init":
+        order   => "15-${server_group}-${server_name}-node-init",
+        target  => $couchbase::params::node_init_script,
+        content => "#!/bin/bash\necho 'Skip Init - removing node from cluster.'",      
+    }    
+  }
+
+  exec { 'couchbase-node-init':
+    path        => ['/opt/couchbase/bin', '/usr/bin', '/bin', '/sbin', '/usr/sbin' ],
+    command     => $couchbase::params::node_init_script,
+    require     => [ Class['couchbase::install'] ],
+    creates     => $couchbase::params::node_init_lock,
+    logoutput   => true,
+    tries       => 5,
+    try_sleep   => 10,        
+  }
+
+
+  # Cluster_init (configure memory, etc)
+
+  # Initialize a script file
+  concat { $couchbase::params::cluster_init_script:
+    owner => '0',
+    group => '0',
+    mode  => '0655',
+  }
+
+  concat::fragment { '00_cluster_init_script_header':
+    target  => $couchbase::params::cluster_init_script,
+    order   => '01',
+    content => template('couchbase/couchbase-cluster-setup.sh.erb'),    
+  }
+
+  concat::fragment { "${server_group}_couchbase_server_${name}_init":
+      order   => "15-${server_group}-${server_name}-init",
+      target  => $couchbase::params::cluster_init_script,
+      content => template('couchbase/couchbase-cluster-init.sh.erb'),
+      notify  => Exec['couchbase-init'],
+  }
 
   exec { 'couchbase-init':
     path        => ['/opt/couchbase/bin', '/usr/bin', '/bin', '/sbin', '/usr/sbin' ],
-    command     => "couchbase-cli cluster-init -c localhost:8091 --cluster-init-username=${user} --cluster-init-password='${password}' --cluster-init-port=8091 --cluster-init-ramsize=${size} -u ${user} -p ${password}",
-    creates     => '/opt/couchbase/var/lib/couchbase/remote_clusters_cache_v2',
-    require     => [ Class['couchbase::install'] ],
+    command     => $couchbase::params::cluster_init_script,
+    require     => [ Class['couchbase::install'], Exec['couchbase-node-init']],
     logoutput   => true,
     tries       => 5,
-    try_sleep   => 10,
+    try_sleep   => 10,    
     refreshonly => true,
   }
 
-  #Just in case, include concat setup
-  include concat::setup
-
-  #Initialize the cluster-building script
+  # Initialize the cluster-building script
   concat { $couchbase::params::cluster_script:
     owner => '0',
     group => '0',
@@ -59,8 +117,10 @@ class couchbase::config (
     content => template('couchbase/couchbase-cluster-setup.sh.erb'),
     notify => Exec['couchbase-cluster-setup'],
   }
-  #Collect cluster node entries for config
+
+  # Collect cluster node entries for config (from stored configs & PuppetDB)  
   Couchbase::Couchbasenode <<| server_group == $server_group |>> ->
+
 
   exec { 'couchbase-cluster-setup':
     path      => ['/usr/local/bin', '/usr/bin/', '/sbin', '/bin', '/usr/sbin',
@@ -73,5 +133,4 @@ class couchbase::config (
     logoutput => true,
     refreshonly => true,
   }
-
 }

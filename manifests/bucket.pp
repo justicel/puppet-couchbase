@@ -53,27 +53,35 @@ define couchbase::bucket (
   $flush           = 0,
 ) {
 
-  # all this has to be done before we can create buckets.
-  Class['couchbase::install'] -> Couchbase::Bucket[$title]
-  Class['couchbase::config'] -> Couchbase::Bucket[$title]
-  Class['couchbase::service'] -> Couchbase::Bucket[$title]
+  include couchbase::params
 
-  #Whether or not to use a bucket password. This probably can use a selector or similar.
-  $create_defaults = "-u ${user} -p '${password}' --bucket=${bucketname} --bucket-type=${type} --bucket-ramsize=${size} --bucket-port=${port} --bucket-replica=${replica} --enable-flush=${flush}"
-  if $bucket_password {
-    $create_command = "${create_defaults} --bucket-password='${bucket_password}'"
+  if $::couchbase::ensure == present {
+    # all this has to be done before we can create buckets.
+    Class['couchbase::install'] -> Couchbase::Bucket[$title]
+    Class['couchbase::config'] -> Couchbase::Bucket[$title]
+    Class['couchbase::service'] -> Couchbase::Bucket[$title]
+
+    #Whether or not to use a bucket password. This probably can use a selector or similar.
+    $create_defaults = "-u ${user} -p '${password}' --bucket=${bucketname} --bucket-type=${type} --bucket-ramsize=${size} --bucket-port=${port} --bucket-replica=${replica} --enable-flush=${flush}"
+    if $bucket_password {
+      $create_command = "${create_defaults} --bucket-password='${bucket_password}'"
+    }
+    else {
+      $create_command = $create_defaults
+    }
+
+    exec {"bucket-create-${bucketname}":
+      path      => ['/opt/couchbase/bin/', '/usr/bin/', '/bin', '/sbin', '/usr/sbin'],
+      command   => "couchbase-cli bucket-create -c 127.0.0.1 ${create_command}",
+      unless    => "couchbase-cli bucket-list -c 127.0.0.1 -u ${user} -p '${password}' | grep ${bucketname}",
+      require   => Class['couchbase::config'],
+      returns   => [0, 2],
+      logoutput => true
+    }
   }
   else {
-    $create_command = $create_defaults
+    notify {"Couchbase is configured to be absent. Bucket can not be configured.":}
   }
-
-  exec {"bucket-create-${bucketname}":
-    path      => ['/opt/couchbase/bin/', '/usr/bin/', '/bin', '/sbin', '/usr/sbin'],
-    command   => "couchbase-cli bucket-create -c 127.0.0.1 ${create_command}",
-	  unless    => "couchbase-cli bucket-list -c 127.0.0.1 -u ${user} -p '${password}' | grep ${bucketname}",
-    require   => Class['couchbase::config'],
-    returns   => [0, 2],
-    logoutput => true
-  }
+  
 
 }
