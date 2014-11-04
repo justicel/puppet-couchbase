@@ -66,8 +66,7 @@ class couchbase
     server_group => $server_group,
     user         => $user,
     password     => $password,
-    ensure       => $ensure,
-    autofailover => $autofailover,
+    ensure       => $ensure,    
   }
 
   if $ensure == present {
@@ -99,6 +98,7 @@ class couchbase
       user         => $user,
       password     => $password,
       server_group => $server_group,
+      autofailover => $autofailover,
     }
 
     ->

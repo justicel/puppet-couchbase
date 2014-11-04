@@ -29,12 +29,20 @@ class couchbase::config (
   $password     = "$couchbase::password",  
   $server_group = 'default',
   $ensure       = $couchbase::ensure,
+  $autofailover   = $::couchbase::params::autofailover,
+
 ) {
 
   include couchbase::params
 
   # Just in case, include concat setup
   include concat::setup
+
+  if $autofailover == false {
+    $_autofailover = 0
+  } else {
+    $_autofailover = 1
+  }
 
   
   # Intitialize a script file

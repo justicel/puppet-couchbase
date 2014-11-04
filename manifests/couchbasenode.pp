@@ -28,16 +28,12 @@ define couchbase::couchbasenode (
   $user         = 'couchbase',
   $password     = 'password',
   $ensure       = $couchbase::params::ensure,  
-  $autofailover = $couchbase::params::autofailover,
+  $autofailover   = $::couchbase::params::autofailover,
 ) {
 
   include couchbase::params
 
-  if $autofailover == false {
-    $_autofailover = 0
-  } else {
-    $_autofailover = 1
-  }
+  
 
 
   if $ensure == present {
