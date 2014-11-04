@@ -18,7 +18,7 @@
 class couchbase::install (
   $version = $couchbase::version,
   $edition = $couchbase::edition,
-  $method  = $couchbase::install_method,  
+  $method  = $couchbase::install_method,
 ) {
   include couchbase::params
 
