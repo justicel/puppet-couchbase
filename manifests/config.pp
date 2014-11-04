@@ -26,7 +26,7 @@
 class couchbase::config (
   $size         = 1024,
   $user         = "$couchbase::user",
-  $password     = "$couchbase::password",  
+  $password     = "$couchbase::password",
   $server_group = 'default',
   $ensure       = $couchbase::ensure,
   $autofailover   = $::couchbase::params::autofailover,
