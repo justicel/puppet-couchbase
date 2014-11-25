@@ -22,10 +22,21 @@ class couchbase::install (
 ) {
   include couchbase::params
 
+  case $::operatingsystem {
+    'RedHat' , 'CentOS': {
+      $version_complete = "${version}-centos${::operatingsystemrelease}.x86_64"
+    }
+    'debian': {
+      $version_complete = "${version}-debian${::operatingsystemrelease}_amd64"
+    }
+    'ubuntu': {
+      $version_complete = "${version}-ubuntu${::operatingsystemrelease}_amd64"
+    }      
+  }
   $pkgname = $edition ? {
-        'enterprise'  => "couchbase-server-enterprise_${version}_x86_64.${couchbase::params::pkgtype}",
-        'community'   => "couchbase-server-community_${version}_x86_64.${couchbase::params::pkgtype}",
-        default       => "couchbase-server-enterprise_${version}_x86_64.${couchbase::params::pkgtype}",
+        'enterprise'  => "couchbase-server-enterprise_${version_complete}.${couchbase::params::pkgtype}",
+        'community'   => "couchbase-server-community_${version_complete}.${couchbase::params::pkgtype}",
+        default       => "couchbase-server-enterprise_${version_complete}.${couchbase::params::pkgtype}",
     }
 
   $pkgsource = "http://packages.couchbase.com/releases/${version}/${pkgname}"
