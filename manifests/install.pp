@@ -22,13 +22,16 @@ class couchbase::install (
 ) {
   include couchbase::params
 
+  $pkgname_enterprise = "couchbase-server-enterprise-${version}-${couchbase::params::osname}.x86_64.${couchbase::params::pkgtype}"
+  $pkgname_community = "couchbase-server-community-${version}-${couchbase::params::osname}.x86_64.${couchbase::params::pkgtype}"
+
   $pkgname = $edition ? {
-        'enterprise'  => "couchbase-server-enterprise_${version}_x86_64.${couchbase::params::pkgtype}",
-        'community'   => "couchbase-server-community_${version}_x86_64.${couchbase::params::pkgtype}",
-        default       => "couchbase-server-enterprise_${version}_x86_64.${couchbase::params::pkgtype}",
+        'enterprise'  => $pkgname_enterprise,
+        'community'   => $pkgname_community,
+        default       => $pkgname_community,
     }
 
-  $pkgsource = "http://packages.couchbase.com/releases/${version}/${pkgname}"
+  $pkgsource = "http://packages.couchbase.com/releases/${version}/${pkgname}" 
 
   case $method {
     'curl': {

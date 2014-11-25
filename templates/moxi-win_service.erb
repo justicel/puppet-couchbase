@@ -1,0 +1,8 @@
+set NODE_CONFIG=<%= @node_config %>
+set CLUSTER_CONFIG=<%= @cluster_config %>
+set PARAMETERS=<%= @parameters %>
+set LOG_FILE=<%= @moxi_log %>
+
+cd <%= @moxi_root %>\bin
+
+moxi %PARAMETERS% -d -Z "%NODE_CONFIG%" -z "%CLUSTER_CONFIG%" -O %LOG_FILE%

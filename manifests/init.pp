@@ -52,43 +52,96 @@ class couchbase
   $nodename       = $::fqdn,
   $server_group   = 'default',
   $install_method = 'curl',
+  $ensure         = 'present',
+  $autofailover   = $::couchbase::params::autofailover,
+  $data_dir       = $::couchbase::params::data_dir,
 ) inherits ::couchbase::params {
+  
+  # TODO: Add parameter data validation
 
-  #Define initialized node as a couchbase node (This will always be true
-  #so this is a safe assumption to make.
+  # Define initialized node as a couchbase node (This will always be true
+  # so this is a safe assumption to make.
   @@couchbase::couchbasenode { "${nodename}":
     server_name  => $nodename,
     server_group => $server_group,
     user         => $user,
     password     => $password,
+    ensure       => $ensure,    
   }
 
-  anchor {
-    'couchbase::begin':;
-    'couchbase::end':;
+  if $ensure == present {
+    anchor {
+      'couchbase::begin':;
+      'couchbase::end':;
+    }
+
+    Anchor['couchbase::begin'] ->
+
+    # Ensure data directory is configured properly
+    file {$data_dir:
+      ensure       => directory,
+      recurse      => true,
+      owner        => 'couchbase',      
+    }
+
+    ->
+
+    class {'couchbase::install':
+      version      => $version,
+      edition      => $edition,
+    }
+
+    ->
+
+    class {'couchbase::config':
+      size         => $size,
+      user         => $user,
+      password     => $password,
+      server_group => $server_group,
+      autofailover => $autofailover,
+    }
+
+    ->
+
+    class {'couchbase::service':}
+
+    ->
+
+    Anchor['couchbase::end']
+
   }
+  elsif $ensure == absent {
+    
+    # Removing node init lock.
+    file {$::couchbase::params::node_init_lock:
+      ensure => absent,
+    }
 
-  Anchor['couchbase::begin'] ->
+    anchor {
+      'couchbase::begin':;
+      'couchbase::end':;
+    }
 
-  class {'couchbase::install':
-    version      => $version,
-    edition      => $edition,
+    Anchor['couchbase::begin'] ->
+
+    class {'couchbase::install':
+      version      => $version,
+      edition      => $edition,
+    }
+
+    ->
+
+    class {'couchbase::config':
+      size         => $size,
+      user         => $user,
+      password     => $password,
+      server_group => $server_group,
+      ensure       => $ensure,
+    }
+
+    ->
+
+    Anchor['couchbase::end']
   }
-
-  ->
-
-  class {'couchbase::config':
-    size         => $size,
-    user         => $user,
-    password     => $password,
-    server_group => $server_group,
-  }
-
-  ->
-
-  class {'couchbase::service':}
-
-  ->
-
-  Anchor['couchbase::end']
+  
 }

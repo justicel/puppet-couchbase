@@ -13,18 +13,27 @@
 #
 class couchbase::params {
 
+  $node_init_script = '/usr/local/bin/couchbase-node-init.sh'
+  $cluster_init_script = '/usr/local/bin/couchbase-cluster-init.sh'
   $cluster_script      = '/usr/local/bin/couchbase-cluster-setup.sh'
+  $node_init_lock      = '/opt/couchbase/var/.node_init'
   $version             = '2.2.0'
   $edition             = 'enterprise'
   $client_package      = 'libcouchbase2-libevent'
+  $ensure              = 'present'
+  $autofailover        = 'true'
+  $data_dir            = '/opt/couchbase/var/lib/couchbase/data'
+  $moxi_port           = '11311'
+  $moxi_version        = '2.5.0'
 
   case $osfamily {
     /(?i:centos|redhat|scientific)/: {
       $openssl_package     = ['openssl098e']
       $installer           = 'rpm'
       $pkgtype             = 'rpm'
-	  $development_package = 'libcouchbase-devel'
-	  $repository          = 'redhat'
+  	  $development_package = 'libcouchbase-devel'
+  	  $repository          = 'redhat'
+      $osname              = 'centos6'
     }
     default: {
       $openssl_package     = ['openssl']
