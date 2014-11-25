@@ -39,6 +39,13 @@ your relationships which in the case of module example42/php could look like::
 
     Class['Couchbase'] -> Couchbase::Client <| |> -> Class['Php'] -> Php::Pecl::Module <| |>
 
+You can add a moxi listener on Windows machines now. It is a resource define so can be added like so:
+
+    couchbase::moxi { 'default':
+      nodes => ['127.0.0.1:8091'],
+    }
+
+For more details about Moxi: http://docs.couchbase.com/moxi-manual-1.8/
 
 Notes
 -----

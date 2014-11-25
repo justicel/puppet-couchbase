@@ -1,0 +1,62 @@
+{
+  "name": "jlondon-couchbase",
+  "version": "1.0.0",
+  "author": "Justice London",
+  "summary": "Puppet Couchbase module",
+  "license": "Apache License, Version 2.0",
+  "source": "https://github.com/justicel/puppet-couchbase.git",
+  "project_page": "https://github.com/justicel/puppet-couchbase",
+  "issues_url": "https://github.com/justicel/puppet-couchbase/issues",
+  "description": "This module allows you to configure and install a puppet based Couchbase cluster. Additionally you will be able to configure buckets (memcached or couchbase). Module requires concat and puppetdb.",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [
+        "5",
+        "6"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "10.04",
+        "12.04",
+        "14.04"
+      ]
+    }
+  ],
+  "dependencies": [
+    {"name":"puppetlabs/concat","version_requirement":">= 1.0.0"},
+    {"name":"puppetlabs/stdlib","version_requirement":">= 3.2.0"}
+  ]
+}
