@@ -17,7 +17,7 @@ class couchbase::params {
   $cluster_init_script = '/usr/local/bin/couchbase-cluster-init.sh'
   $cluster_script      = '/usr/local/bin/couchbase-cluster-setup.sh'
   $node_init_lock      = '/opt/couchbase/var/.node_init'
-  $version             = '2.2.0'
+  $version             = '3.0.1'
   $edition             = 'enterprise'
   $client_package      = 'libcouchbase2-libevent'
   $ensure              = 'present'
