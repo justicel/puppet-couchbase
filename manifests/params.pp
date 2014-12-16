@@ -13,7 +13,7 @@
 #
 class couchbase::params {
 
-  $node_init_script = '/usr/local/bin/couchbase-node-init.sh'
+  $node_init_script    = '/usr/local/bin/couchbase-node-init.sh'
   $cluster_init_script = '/usr/local/bin/couchbase-cluster-init.sh'
   $cluster_script      = '/usr/local/bin/couchbase-cluster-setup.sh'
   $node_init_lock      = '/opt/couchbase/var/.node_init'
@@ -26,21 +26,34 @@ class couchbase::params {
   $moxi_port           = '11311'
   $moxi_version        = '2.5.0'
 
-  case $osfamily {
+  case $::osfamily {
     /(?i:centos|redhat|scientific)/: {
       $openssl_package     = ['openssl098e']
       $installer           = 'rpm'
       $pkgtype             = 'rpm'
-  	  $development_package = 'libcouchbase-devel'
-  	  $repository          = 'redhat'
+      $development_package = 'libcouchbase-devel'
+      $repository          = 'redhat'
       $osname              = 'centos6'
+      $pkgarch             = '.x86_64'
+    }
+    'Debian': {
+      $openssl_package = ['openssl']
+      $installer       = 'dpkg'
+      $pkgtype         = 'deb'
+      $development_package = 'libcouchbase-dev'
+      $repository      = 'debian'
+      $pkgarch         = '_amd64'
+      case $::operatingsystem {
+        'Debian': {
+          $osname = 'debian7'
+        }
+        'Ubuntu': {
+          $osname = 'ubuntu12.04'
+        }
+      }
     }
     default: {
-      $openssl_package     = ['openssl']
-      $installer           = 'dpkg'
-      $pkgtype             = 'deb'
-	  $development_package = 'libcouchbase-dev'
-	  $repository          = 'debian'
+      fail("Class['couchbase::params']: Unsupported OS: ${::osfamily}")
     }
   }
 }

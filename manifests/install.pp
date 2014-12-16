@@ -22,8 +22,8 @@ class couchbase::install (
 ) {
   include couchbase::params
 
-  $pkgname_enterprise = "couchbase-server-enterprise-${version}-${couchbase::params::osname}.x86_64.${couchbase::params::pkgtype}"
-  $pkgname_community = "couchbase-server-community-${version}-${couchbase::params::osname}.x86_64.${couchbase::params::pkgtype}"
+  $pkgname_enterprise = "couchbase-server-enterprise-${version}-${::couchbase::params::osname}${::couchbase::params::pkgarch}.${::couchbase::params::pkgtype}"
+  $pkgname_community = "couchbase-server-community-${version}-${::couchbase::params::osname}${::couchbase::params::pkgarch}.${::couchbase::params::pkgtype}"
 
   $pkgname = $edition ? {
         'enterprise'  => $pkgname_enterprise,
@@ -45,7 +45,7 @@ class couchbase::install (
         name     => 'couchbase-server',
         notify   => Exec['couchbase-init'],
         provider => $couchbase::params::installer,
-        require  => [Package[$couchbase::params::openssl_package], Exec['download_couchbase']],
+        require  => [Package[$::couchbase::params::openssl_package], Exec['download_couchbase']],
         source   => "/opt/${pkgname}",
       }
     }
@@ -54,7 +54,7 @@ class couchbase::install (
         ensure   => $couchbase::version,
         name     => 'couchbase-server',
         notify   => Exec['couchbase-init'],
-        require  => Package[$couchbase::params::openssl_package],
+        require  => Package[$::couchbase::params::openssl_package],
       }
     }
     default: {
@@ -62,8 +62,8 @@ class couchbase::install (
     }
   }
 
-  if !defined(Package[$couchbase::params::openssl_package]) {
-    ensure_packages($couchbase::params::openssl_package)
+  if !defined(Package[$::couchbase::params::openssl_package]) {
+    ensure_packages($::couchbase::params::openssl_package)
   }
 
 }
