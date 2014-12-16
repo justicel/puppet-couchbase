@@ -35,9 +35,6 @@ class couchbase::config (
 
   include couchbase::params
 
-  # Just in case, include concat setup
-  include concat::setup
-
   if $autofailover == false {
     $_autofailover = 0
   } else {
