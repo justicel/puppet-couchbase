@@ -31,7 +31,7 @@ class couchbase::install (
         default      => $pkgname_community,
     }
 
-  $pkgsource = "http://packages.couchbase.com/releases/${version}/${pkgname}" 
+  $pkgsource = "http://packages.couchbase.com/releases/${version}/${pkgname}"
 
   case $method {
     'curl': {
@@ -44,21 +44,21 @@ class couchbase::install (
         ensure   => installed,
         name     => 'couchbase-server',
         notify   => Exec['couchbase-init'],
-        provider => $couchbase::params::installer,
+        provider => $::couchbase::params::installer,
         require  => [Package[$::couchbase::params::openssl_package], Exec['download_couchbase']],
         source   => "/opt/${pkgname}",
       }
     }
     'package': {
       package {'couchbase-server':
-        ensure   => $couchbase::version,
-        name     => 'couchbase-server',
-        notify   => Exec['couchbase-init'],
-        require  => Package[$::couchbase::params::openssl_package],
+        ensure  => $::couchbase::version,
+        name    => 'couchbase-server',
+        notify  => Exec['couchbase-init'],
+        require => Package[$::couchbase::params::openssl_package],
       }
     }
     default: {
-      fail ("$module_name install_method must be 'package' or 'curl'")
+      fail ("${module_name} install_method must be 'package' or 'curl'")
     }
   }
 

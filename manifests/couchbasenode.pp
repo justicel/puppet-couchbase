@@ -27,32 +27,25 @@ define couchbase::couchbasenode (
   $server_group = 'default',
   $user         = 'couchbase',
   $password     = 'password',
-  $ensure       = $couchbase::params::ensure,  
-  $autofailover   = $::couchbase::params::autofailover,
+  $ensure       = $::couchbase::params::ensure,
+  $autofailover = $::couchbase::params::autofailover,
 ) {
-
-  include couchbase::params
-
-  
-
+  include ::couchbase::params
 
   if $ensure == present {
     concat::fragment { "${server_group}_couchbase_server_${name}":
       order   => "20-${server_group}-${server_name}",
-      target  => $couchbase::params::cluster_script,
+      target  => $::couchbase::params::cluster_script,
       content => template('couchbase/couchbasenode.erb'),
       notify  => Exec['couchbase-cluster-setup'],
     }
   }
-  elsif $ensure == absent {    
+  elsif $ensure == absent {
     concat::fragment { "${server_group}_couchbase_server_${name}":
       order   => "20-${server_group}-${server_name}",
-      target  => $couchbase::params::cluster_script,
+      target  => $::couchbase::params::cluster_script,
       content => template('couchbase/couchbasenode_remove.erb'),
       notify  => Exec['couchbase-cluster-setup'],
     }
   }
-
-  
-
 }

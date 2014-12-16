@@ -7,7 +7,7 @@
 # Alex Farcas <alex.farcas@gmail.com>
 #
 class couchbase::repository::redhat {
-  include couchbase::params
+  include ::couchbase::params
 
   $couchbase_os_version = $::operatingsystemrelease ? {
     /^5\./  => '5.5',

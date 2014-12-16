@@ -8,11 +8,11 @@
 # Alex Farcas <alex.farcas@gmail.com>
 #
 class couchbase::repository {
-  include couchbase::params
+  include ::couchbase::params
 
   case $::couchbase::params::repository {
-    redhat: { include couchbase::repository::redhat }
-    debian: { include couchbase::repository::debian }
+    redhat: { include ::couchbase::repository::redhat }
+    debian: { include ::couchbase::repository::debian }
     default: { }
   }
 }

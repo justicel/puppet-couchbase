@@ -61,12 +61,12 @@ class couchbase
 
   # Define initialized node as a couchbase node (This will always be true
   # so this is a safe assumption to make.
-  @@couchbase::couchbasenode { "${nodename}":
+  @@couchbase::couchbasenode { $nodename:
+    ensure       => $ensure,
     server_name  => $nodename,
     server_group => $server_group,
     user         => $user,
     password     => $password,
-    ensure       => $ensure,    
   }
 
   if $ensure == present {
@@ -78,8 +78,8 @@ class couchbase
     Anchor['couchbase::begin'] ->
 
     class {'couchbase::install':
-      version      => $version,
-      edition      => $edition,
+      version => $version,
+      edition => $edition,
     }
 
     ->
@@ -125,18 +125,18 @@ class couchbase
     Anchor['couchbase::begin'] ->
 
     class {'couchbase::install':
-      version      => $version,
-      edition      => $edition,
+      version => $version,
+      edition => $edition,
     }
 
     ->
 
     class {'couchbase::config':
+      ensure       => $ensure,
       size         => $size,
       user         => $user,
       password     => $password,
       server_group => $server_group,
-      ensure       => $ensure,
     }
 
     ->

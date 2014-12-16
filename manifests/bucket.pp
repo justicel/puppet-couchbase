@@ -80,7 +80,7 @@ define couchbase::bucket (
     }
   }
   else {
-    notify {"Couchbase is configured to be absent. Bucket can not be configured.":}
+    notify {'Couchbase is configured to be absent. Bucket can not be configured.':}
   }
   
 

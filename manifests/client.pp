@@ -10,8 +10,8 @@
 define couchbase::client(
   $package_ensure = present
 ) {
-  include couchbase::params
-  include couchbase::repository
+  include ::couchbase::params
+  include ::couchbase::repository
 
   package { $::couchbase::params::development_package:
     ensure  => $package_ensure,
@@ -24,8 +24,8 @@ define couchbase::client(
   }
   
   case $title {
-    ruby: { include couchbase::client::ruby }
-    python: { include couchbase::client::python }
+    ruby: { include ::couchbase::client::ruby }
+    python: { include ::couchbase::client::python }
     default: { }
-  } 
+  }
 }

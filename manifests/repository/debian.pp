@@ -7,7 +7,7 @@
 # Alex Farcas <alex.farcas@gmail.com>
 #
 class couchbase::repository::debian {
-  include couchbase::params
+  include ::couchbase::params
 
   apt::source { 'couchbase':
     location    => downcase("http://packages.couchbase.com/${::lsbdistid}"),

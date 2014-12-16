@@ -21,7 +21,7 @@ class couchbase::params {
   $edition             = 'enterprise'
   $client_package      = 'libcouchbase2-libevent'
   $ensure              = 'present'
-  $autofailover        = 'true'
+  $autofailover        = true
   $data_dir            = '/opt/couchbase/var/lib/couchbase/data'
   $moxi_port           = '11311'
   $moxi_version        = '2.5.0'
@@ -52,6 +52,7 @@ class couchbase::params {
         'Ubuntu': {
           $osname = 'ubuntu12.04'
         }
+        default: { }
       }
     }
     default: {

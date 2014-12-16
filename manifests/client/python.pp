@@ -17,7 +17,7 @@ class couchbase::client::python(
     name     => 'couchbase',
     provider => 'pip',
     require  => [
-      Package[$::couchbase::params::client_package], 
+      Package[$::couchbase::params::client_package],
       Package[$::couchbase::params::development_package]
     ]
   }

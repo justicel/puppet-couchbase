@@ -17,7 +17,7 @@ class couchbase::client::ruby(
     name     => 'couchbase',
     provider => 'gem',
     require  => [
-      Package[$::couchbase::params::client_package], 
+      Package[$::couchbase::params::client_package],
       Package[$::couchbase::params::development_package]
     ]
   }
