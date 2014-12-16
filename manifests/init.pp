@@ -77,18 +77,18 @@ class couchbase
 
     Anchor['couchbase::begin'] ->
 
-    # Ensure data directory is configured properly
-    file {$data_dir:
-      ensure       => directory,
-      recurse      => true,
-      owner        => 'couchbase',      
+    class {'couchbase::install':
+      version      => $version,
+      edition      => $edition,
     }
 
     ->
 
-    class {'couchbase::install':
-      version      => $version,
-      edition      => $edition,
+    # Ensure data directory is configured properly
+    file {$data_dir:
+      ensure  => directory,
+      recurse => true,
+      owner   => 'couchbase',
     }
 
     ->
