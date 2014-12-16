@@ -1,3 +1,10 @@
+2014-12-16 - Version 1.0.1
+
+Summary: Fixes bugs with version downloading from couchbase package URL
+
+Bugfixes:
+- Couchbase changed URL's again for packages. This fixes it
+
 2014-11-25 - Version 1.0.0
 
 Summary: Syntax changes, package fixes and new resource definition additions.
