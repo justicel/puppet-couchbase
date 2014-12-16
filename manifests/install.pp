@@ -22,13 +22,13 @@ class couchbase::install (
 ) {
   include couchbase::params
 
-  $pkgname_enterprise = "couchbase-server-enterprise-${version}-${::couchbase::params::osname}${::couchbase::params::pkgarch}.${::couchbase::params::pkgtype}"
-  $pkgname_community = "couchbase-server-community-${version}-${::couchbase::params::osname}${::couchbase::params::pkgarch}.${::couchbase::params::pkgtype}"
+  $pkgname_enterprise = "couchbase-server-enterprise-${version}${::couchbase::params::pkgverspacer}${::couchbase::params::osname}${::couchbase::params::pkgarch}.${::couchbase::params::pkgtype}"
+  $pkgname_community = "couchbase-server-community-${version}${::couchbase::params::pkgverspacer}${::couchbase::params::osname}${::couchbase::params::pkgarch}.${::couchbase::params::pkgtype}"
 
   $pkgname = $edition ? {
-        'enterprise'  => $pkgname_enterprise,
-        'community'   => $pkgname_community,
-        default       => $pkgname_community,
+        'enterprise' => $pkgname_enterprise,
+        'community'  => $pkgname_community,
+        default      => $pkgname_community,
     }
 
   $pkgsource = "http://packages.couchbase.com/releases/${version}/${pkgname}" 

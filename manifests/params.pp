@@ -35,6 +35,7 @@ class couchbase::params {
       $repository          = 'redhat'
       $osname              = 'centos6'
       $pkgarch             = '.x86_64'
+      $pkgverspacer        = '-'
     }
     'Debian': {
       $openssl_package = ['openssl']
@@ -43,6 +44,7 @@ class couchbase::params {
       $development_package = 'libcouchbase-dev'
       $repository      = 'debian'
       $pkgarch         = '_amd64'
+      $pkgverspacer    = '_'
       case $::operatingsystem {
         'Debian': {
           $osname = 'debian7'
