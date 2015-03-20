@@ -1,3 +1,8 @@
+2015-03-20 - Version 1.0.2
+
+Bugfixes:
+- Changed default install to community edition.
+
 2014-12-16 - Version 1.0.1
 
 Summary: Fixes bugs with version downloading from couchbase package URL
