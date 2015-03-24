@@ -16,9 +16,10 @@
 # Copyright 2013 Justice London, unless otherwise noted.
 #
 class couchbase::install (
-  $version = $couchbase::version,
-  $edition = $couchbase::edition,
-  $method  = $couchbase::install_method,
+  $version           = $couchbase::version,
+  $edition           = $couchbase::edition,
+  $method            = $couchbase::install_method,
+  $download_url_base = $couchbase::download_url_base
 ) {
   include couchbase::params
 
@@ -31,7 +32,7 @@ class couchbase::install (
         default      => $pkgname_community,
     }
 
-  $pkgsource = "http://packages.couchbase.com/releases/${version}/${pkgname}"
+  $pkgsource = "${download_url_base}/${version}/${pkgname}"
 
   case $method {
     'curl': {

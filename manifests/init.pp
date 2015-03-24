@@ -44,17 +44,18 @@
 
 class couchbase
 (
-  $size           = 1024,
-  $user           = 'couchbase',
-  $password       = 'password',
-  $version        = $::couchbase::params::version,
-  $edition        = $::couchbase::params::edition,
-  $nodename       = $::fqdn,
-  $server_group   = 'default',
-  $install_method = 'curl',
-  $ensure         = 'present',
-  $autofailover   = $::couchbase::params::autofailover,
-  $data_dir       = $::couchbase::params::data_dir,
+  $size              = 1024,
+  $user              = 'couchbase',
+  $password          = 'password',
+  $version           = $::couchbase::params::version,
+  $edition           = $::couchbase::params::edition,
+  $nodename          = $::fqdn,
+  $server_group      = 'default',
+  $install_method    = 'curl',
+  $ensure            = 'present',
+  $autofailover      = $::couchbase::params::autofailover,
+  $data_dir          = $::couchbase::params::data_dir,
+  $download_url_base = $::couchbase::params::download_url_base,
 ) inherits ::couchbase::params {
   
   # TODO: Add parameter data validation
@@ -125,8 +126,9 @@ class couchbase
     Anchor['couchbase::begin'] ->
 
     class {'couchbase::install':
-      version => $version,
-      edition => $edition,
+      version           => $version,
+      edition           => $edition,
+      download_url_base => $download_url_base,
     }
 
     ->
