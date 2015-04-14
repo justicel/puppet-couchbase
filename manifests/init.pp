@@ -55,6 +55,7 @@ class couchbase
   $ensure            = 'present',
   $autofailover      = $::couchbase::params::autofailover,
   $data_dir          = $::couchbase::params::data_dir,
+  $index_dir        = undef,
   $download_url_base = $::couchbase::params::download_url_base,
 ) inherits ::couchbase::params {
   

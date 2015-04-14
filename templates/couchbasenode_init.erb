@@ -2,4 +2,6 @@
 
 /opt/couchbase/bin/couchbase-cli node-init -c localhost \
 --node-init-data-path=<%= @data_dir %> \
+<% if @index_dir -%>--node-init-index-path=<%= @index_dir %> \
+<% end -%>
 -u <%= @user %> -p '<%= @password %>' && touch /opt/couchbase/var/.node_init
