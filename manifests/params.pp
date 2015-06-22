@@ -20,7 +20,7 @@ class couchbase::params {
   $version             = '3.0.1'
   $edition             = 'community'
   $client_package      = 'libcouchbase2-libevent'
-  $download_url_base   = 'http://packages.couchbase.com/releases/'
+  $download_url_base   = 'http://packages.couchbase.com/releases'
   $ensure              = 'present'
   $autofailover        = true
   $data_dir            = '/opt/couchbase/var/lib/couchbase/data'
