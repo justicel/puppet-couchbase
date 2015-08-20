@@ -59,7 +59,19 @@ class couchbase
   $download_url_base = $::couchbase::params::download_url_base,
 ) inherits ::couchbase::params {
   
-  # TODO: Add parameter data validation
+  validate_numeric($size)
+  validate_string($user)
+  validate_string($password)
+  validate_string($version)
+  validate_string($edition)
+  validate_string($nodename)
+  validate_string($server_group)
+  validate_re($install_method, ['curl', 'package'])
+  validate_string($ensure)
+  validate_bool($autofailover)
+  validate_absolute_path($autofailover)
+  validate_absolute_path($index_dir)
+  validate_string($download_url_base)
 
   # Define initialized node as a couchbase node (This will always be true
   # so this is a safe assumption to make.
