@@ -104,7 +104,7 @@ class couchbase
 
     Anchor['couchbase::begin'] ->
 
-    class {'couchbase::install':
+    class {'::couchbase::install':
       version => $version,
       edition => $edition,
     }
@@ -120,7 +120,7 @@ class couchbase
 
     ->
 
-    class {'couchbase::config':
+    class {'::couchbase::config':
       size         => $size,
       user         => $user,
       password     => $password,
@@ -130,7 +130,7 @@ class couchbase
 
     ->
 
-    class {'couchbase::service':}
+    class {'::couchbase::service':}
 
     ->
 
@@ -151,7 +151,7 @@ class couchbase
 
     Anchor['couchbase::begin'] ->
 
-    class {'couchbase::install':
+    class {'::couchbase::install':
       version           => $version,
       edition           => $edition,
       download_url_base => $download_url_base,
@@ -159,7 +159,7 @@ class couchbase
 
     ->
 
-    class {'couchbase::config':
+    class {'::couchbase::config':
       ensure       => $ensure,
       size         => $size,
       user         => $user,
