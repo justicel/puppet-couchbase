@@ -82,7 +82,7 @@ class couchbase
   validate_re($install_method, ['curl', 'package'])
   validate_string($ensure)
   validate_bool($autofailover)
-  validate_absolute_path($autofailover)
+  validate_absolute_path($data_dir)
   validate_absolute_path($index_dir)
   validate_string($download_url_base)
 
