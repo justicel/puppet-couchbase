@@ -82,8 +82,10 @@ class couchbase
   validate_re($install_method, ['curl', 'package'])
   validate_string($ensure)
   validate_bool($autofailover)
-  validate_absolute_path($autofailover)
-  validate_absolute_path($index_dir)
+  validate_absolute_path($data_dir)
+  if ($index_dir) {
+    validate_absolute_path($index_dir)
+  }
   validate_string($download_url_base)
 
   # Define initialized node as a couchbase node (This will always be true
