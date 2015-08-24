@@ -12,6 +12,7 @@ class couchbase::repository::redhat {
   $couchbase_os_version = $::operatingsystemrelease ? {
     /^5\./  => '5.5',
     /^6\./  => '6.2',
+    /^7\./  => '7',
     default => '0.0',
   }
 
