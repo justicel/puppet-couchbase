@@ -11,7 +11,7 @@ class couchbase::repository::debian {
 
   apt::source { 'couchbase':
     location    => downcase("http://packages.couchbase.com/${::lsbdistid}"),
-    repos       => "${::lsbdistcodename}/main",
+    repos       => "main",
     key         => 'CD406E62',
     key_source  => 'http://packages.couchbase.com/ubuntu/couchbase.key',
     include_src => false,
