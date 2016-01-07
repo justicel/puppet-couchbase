@@ -1,9 +1,9 @@
 {
   "name": "jlondon-couchbase",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "Justice London",
   "summary": "Puppet Couchbase module",
-  "license": "Apache License, Version 2.0",
+  "license": "Apache-2.0",
   "source": "https://github.com/justicel/puppet-couchbase.git",
   "project_page": "https://github.com/justicel/puppet-couchbase",
   "issues_url": "https://github.com/justicel/puppet-couchbase/issues",
