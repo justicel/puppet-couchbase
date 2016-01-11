@@ -51,7 +51,14 @@ class couchbase::params {
           $osname = 'debian7'
         }
         'Ubuntu': {
-          $osname = 'ubuntu12.04'
+          case $::operatingsystemrelease {
+            '14.04': {
+              $osname = 'ubuntu14.04'
+            }
+            default: {
+              $osname = 'ubuntu12.04'
+            }
+          }
         }
         default: { }
       }
