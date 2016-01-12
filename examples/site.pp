@@ -2,6 +2,8 @@ class { 'couchbase':
   size     => 256,
   user     => 'couchbase',
   password => 'password',
+  version  => '4.1.0',
+  edition  => 'enterprise',
 }
 
 couchbase::bucket { 'default':
