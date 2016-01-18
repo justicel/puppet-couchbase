@@ -59,8 +59,22 @@ the same server group.
 Due to this, the module requires the mentioned puppetdb services as well as storeconfigs,
 puppetlabs/concat and puppetlabs/stdlib.
 
+Testing
+-------
+
+You might want to get some ruby and then:
+
+    gem install bundler
+    bundler install
+    bundle exec rake test
+
+If you want to do acceptance testing:
+
+    bundle exec rake spec_prep
+    BEAKER_set=ubuntu-1204-x64 BEAKER_destroy=no rake beaker
+
 TODO
 ----
 
 + Add the ability to do cleanup of nodes from cluster
-+ Build tests into module
++ Build more tests into module to increase coverage

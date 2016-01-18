@@ -33,7 +33,7 @@ class couchbase::config (
 
 ) {
 
-  include couchbase::params
+  include ::couchbase::params
 
   if $autofailover == false {
     $_autofailover = 0
@@ -41,7 +41,6 @@ class couchbase::config (
     $_autofailover = 1
   }
 
-  
   # Intitialize a script file
   concat { $::couchbase::params::node_init_script:
     owner => '0',
@@ -53,14 +52,14 @@ class couchbase::config (
   # Node_init (configure data directory location, etc - be careful to change it will destroy current data)
   if $ensure == present {
     concat::fragment { "${server_group}_couchbase_server_${name}_node_init":
-        order   => "15-${server_group}-${server_name}-node-init",
+        order   => "15-${server_group}-${::server_name}-node-init",
         target  => $::couchbase::params::node_init_script,
         content => template('couchbase/couchbasenode_init.erb'),
     }
   }
   else {
     concat::fragment { "${server_group}_couchbase_server_${name}_node_init":
-      order   => "15-${server_group}-${server_name}-node-init",
+      order   => "15-${server_group}-${::server_name}-node-init",
       target  => $::couchbase::params::node_init_script,
       content => "#!/bin/bash\necho 'Skip Init - removing node from cluster.'",
     }
@@ -93,7 +92,7 @@ class couchbase::config (
   }
 
   concat::fragment { "${server_group}_couchbase_server_${name}_init":
-      order   => "15-${server_group}-${server_name}-init",
+      order   => "15-${server_group}-${::server_name}-init",
       target  => $::couchbase::params::cluster_init_script,
       content => template('couchbase/couchbase-cluster-init.sh.erb'),
       notify  => Exec['couchbase-init'],
@@ -123,7 +122,7 @@ class couchbase::config (
     notify  => Exec['couchbase-cluster-setup'],
   }
 
-  # Collect cluster node entries for config (from stored configs & PuppetDB)  
+  # Collect cluster node entries for config (from stored configs & PuppetDB)
   Couchbase::Couchbasenode <<| server_group == $server_group |>> ->
 
 
