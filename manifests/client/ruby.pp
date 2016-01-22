@@ -8,17 +8,17 @@
 # Alex Farcas <alex.farcas@gmail.com>
 #
 class couchbase::client::ruby(
-  $package_ensure = present
-) {
-  include couchbase::params
-
+  $package_ensure = present,
+  $client_package = $::couchbase::params::client_package,
+  $development_package = $::couchbase::params::development_package
+) inherits ::couchbase::params {
   package { 'couchbase_ruby':
     ensure   => $package_ensure,
     name     => 'couchbase',
     provider => 'gem',
     require  => [
-      Package[$::couchbase::params::client_package],
-      Package[$::couchbase::params::development_package]
+      Package[$client_package],
+      Package[$development_package]
     ]
   }
 }
