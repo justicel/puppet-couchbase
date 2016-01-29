@@ -1,3 +1,5 @@
 pkg/
 .vagrant/
-
+coverage/
+log/
+spec/fixtures/modules/

@@ -1,6 +1,6 @@
 # == Class: couchbase::client::python
 #
-# Installs the python client library. 
+# Installs the python client library.
 # Not meant to be used directly, instead see class couchbase::client
 #
 # === Authors
@@ -10,7 +10,7 @@
 class couchbase::client::python(
   $package_ensure = present
 ) {
-  include couchbase::params
+  include ::couchbase::params
 
   package { 'couchbase_python':
     ensure   => $package_ensure,
@@ -19,6 +19,6 @@ class couchbase::client::python(
     require  => [
       Package[$::couchbase::params::client_package],
       Package[$::couchbase::params::development_package]
-    ]
+    ],
   }
 }

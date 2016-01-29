@@ -17,15 +17,15 @@ define couchbase::client(
     ensure  => $package_ensure,
     require => Class['couchbase::repository'],
   }
-  
+
   package { $::couchbase::params::client_package:
     ensure  => $package_ensure,
     require => Package[$::couchbase::params::development_package],
   }
-  
+
   case $title {
-    ruby: { include ::couchbase::client::ruby }
-    python: { include ::couchbase::client::python }
+    'ruby': { include ::couchbase::client::ruby }
+    'python': { include ::couchbase::client::python }
     default: { }
   }
 }

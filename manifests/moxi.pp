@@ -14,7 +14,7 @@ define couchbase::moxi (
   include ::couchbase::params
 
   $node_config = "port_listen=${port},default_bucket_name=${bucket},downstream_max=1024,downstream_conn_max=16,connect_max_errors=5,connect_retry_interval=30000,connect_timeout=400,auth_timeout=100,cycle=200,downstream_conn_queue_timeout=200,downstream_timeout=5000,wait_queue_timeout=200"
-      
+
   $cluster_config = join($cluster_urls,',')
 
   if $::kernel == 'Linux' {
@@ -50,17 +50,17 @@ define couchbase::moxi (
 
   }
   elsif $::kernel == 'windows' {
-    $moxi_root = 'c:\moxi'
-    $moxi_log  = "${moxi_root}\log\moxi_${port}.log"
+    $moxi_root = 'c:\\moxi'
+    $moxi_log  = "${moxi_root}\\log\\moxi_${port}.log"
 
-    file { "${$moxi_root}\bin\moxi-server_${port}.cmd":
+    file { "${$moxi_root}\\bin\\moxi-server_${port}.cmd":
       content => template("${module_name}/moxi-win_service.erb"),
       require => Package['moxi'],
       notify  => Service["Couchbase Moxi ${bucket} ${port}"],
     }
 
     exec {"register-moxi-service_${port}":
-      command => "nssm install \"Couchbase Moxi ${bucket} ${port}\" ${moxi_root}\bin\moxi-server_${port}.cmd",
+      command => "nssm install \"Couchbase Moxi ${bucket} ${port}\" ${moxi_root}\\bin\\moxi-server_${port}.cmd",
       unless  => "sc query \"Couchbase Moxi ${bucket} ${port}\"",
       path    => $::path,
       require => Package['nssm','moxi'],

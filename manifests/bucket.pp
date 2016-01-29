@@ -53,7 +53,7 @@ define couchbase::bucket (
   $flush           = 0,
 ) {
 
-  include couchbase::params
+  include ::couchbase::params
 
   if $::couchbase::ensure == present {
     # all this has to be done before we can create buckets.
@@ -76,12 +76,12 @@ define couchbase::bucket (
       unless    => "couchbase-cli bucket-list -c 127.0.0.1 -u ${user} -p '${password}' | grep -x ${bucketname}",
       require   => Class['couchbase::config'],
       returns   => [0, 2],
-      logoutput => true
+      logoutput => true,
     }
   }
   else {
     notify {'Couchbase is configured to be absent. Bucket can not be configured.':}
   }
-  
+
 
 }

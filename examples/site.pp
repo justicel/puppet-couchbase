@@ -1,4 +1,4 @@
-class { 'couchbase':
+class { '::couchbase':
   size     => 256,
   user     => 'couchbase',
   password => 'password',

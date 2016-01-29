@@ -23,7 +23,7 @@
 # [*server_group*]
 # The group in which this couchbase server will live. Set to 'default'
 # [*install_method*]
-#  The method used to install the couchbase server. Can be either curl 
+#  The method used to install the couchbase server. Can be either curl
 #  or package
 # [*autofailover*]
 #  Should the cluster autofailover
@@ -58,7 +58,7 @@
 class couchbase
 (
   $ensure            = 'present',
-  $size              = 1024,
+  $size              = 512,
   $user              = 'couchbase',
   $password          = 'password',
   $version           = $::couchbase::params::version,
@@ -107,18 +107,14 @@ class couchbase
     Anchor['couchbase::begin'] ->
 
     class {'::couchbase::install':
-      version => $version,
-      edition => $edition,
+      version  => $version,
+      edition  => $edition,
+      data_dir => $data_dir,
     }
 
     ->
 
-    # Ensure data directory is configured properly
-    file {$data_dir:
-      ensure  => directory,
-      recurse => true,
-      owner   => 'couchbase',
-    }
+    class {'::couchbase::service':}
 
     ->
 
@@ -129,10 +125,6 @@ class couchbase
       server_group => $server_group,
       autofailover => $autofailover,
     }
-
-    ->
-
-    class {'::couchbase::service':}
 
     ->
 
