@@ -34,7 +34,7 @@ class couchbase::params {
       $pkgtype             = 'rpm'
       $development_package = 'libcouchbase-devel'
       $repository          = 'redhat'
-      $osname              = 'centos6'
+      $osname              = "centos${::operatingsystemmajrelease}"
       $pkgarch             = '.x86_64'
       $pkgverspacer        = '-'
     }
