@@ -106,6 +106,16 @@ class couchbase
 
     Anchor['couchbase::begin'] ->
 
+    exec { "disable_transparent_hugepage_enabled":
+      command => "/bin/echo never > /sys/kernel/mm/transparent_hugepage/enabled",
+      unless  => "/bin/grep -c '\[never\]' /sys/kernel/mm/transparent_hugepage/enabled 2>/dev/null",
+    } ->
+
+    exec { "disable_transparent_hugepage_defrag":
+      command => "/bin/echo never > /sys/kernel/mm/transparent_hugepage/defrag",
+      unless  => "/bin/grep -c '\[never\]' /sys/kernel/mm/transparent_hugepage/defrag 2>/dev/null",
+    } ->
+
     class {'::couchbase::install':
       version  => $version,
       edition  => $edition,
