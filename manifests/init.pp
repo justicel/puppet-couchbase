@@ -33,6 +33,8 @@
 #  The directory used to store the index of the data. Must be an absolute path.
 # [*download_url_base*]
 #  The url used to fetch the repository without version nor edition
+# [*disable_transparent_hugepage*]
+#  Couchbase has better performance and no blocking with transparent hugepages disabled
 #
 # === Examples
 #
@@ -70,6 +72,7 @@ class couchbase
   $data_dir          = $::couchbase::params::data_dir,
   $index_dir        = undef,
   $download_url_base = $::couchbase::params::download_url_base,
+  $disable_transparent_hugepage = $::couchbase::params::disable_transparent_hugepage,
 ) inherits ::couchbase::params {
 
   validate_numeric($size)
@@ -87,6 +90,7 @@ class couchbase
     validate_absolute_path($index_dir)
   }
   validate_string($download_url_base)
+  validate_bool($disable_transparent_hugepage)
 
   # Define initialized node as a couchbase node (This will always be true
   # so this is a safe assumption to make.
@@ -104,17 +108,23 @@ class couchbase
       'couchbase::end':;
     }
 
-    Anchor['couchbase::begin'] ->
+    if $disable_transparent_hugepage {
+      exec { "disable_transparent_hugepage_enabled":
+        command => "/bin/echo never > /sys/kernel/mm/transparent_hugepage/enabled",
+        unless  => "/bin/grep -c '\\[never\\]' /sys/kernel/mm/transparent_hugepage/enabled 2>/dev/null",
+        require => Anchor['couchbase::begin'],
+      } ->
 
-    exec { "disable_transparent_hugepage_enabled":
-      command => "/bin/echo never > /sys/kernel/mm/transparent_hugepage/enabled",
-      unless  => "/bin/grep -c '\[never\]' /sys/kernel/mm/transparent_hugepage/enabled 2>/dev/null",
-    } ->
+      exec { "disable_transparent_hugepage_defrag":
+        command => "/bin/echo never > /sys/kernel/mm/transparent_hugepage/defrag",
+        unless  => "/bin/grep -c '\\[never\\]' /sys/kernel/mm/transparent_hugepage/defrag 2>/dev/null",
+        before  => Class['::couchbase::install'],
+      }
+    }
 
-    exec { "disable_transparent_hugepage_defrag":
-      command => "/bin/echo never > /sys/kernel/mm/transparent_hugepage/defrag",
-      unless  => "/bin/grep -c '\[never\]' /sys/kernel/mm/transparent_hugepage/defrag 2>/dev/null",
-    } ->
+    Anchor['couchbase::begin']
+
+    ->
 
     class {'::couchbase::install':
       version  => $version,

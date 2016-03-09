@@ -13,19 +13,20 @@
 #
 class couchbase::params {
 
-  $node_init_script    = '/usr/local/bin/couchbase-node-init.sh'
-  $cluster_init_script = '/usr/local/bin/couchbase-cluster-init.sh'
-  $cluster_script      = '/usr/local/bin/couchbase-cluster-setup.sh'
-  $node_init_lock      = '/opt/couchbase/var/.node_init'
-  $version             = '3.0.1'
-  $edition             = 'community'
-  $client_package      = 'libcouchbase2-libevent'
-  $download_url_base   = 'http://packages.couchbase.com/releases'
-  $ensure              = 'present'
-  $autofailover        = true
-  $data_dir            = '/opt/couchbase/var/lib/couchbase/data'
-  $moxi_port           = '11311'
-  $moxi_version        = '2.5.0'
+  $node_init_script             = '/usr/local/bin/couchbase-node-init.sh'
+  $cluster_init_script          = '/usr/local/bin/couchbase-cluster-init.sh'
+  $cluster_script               = '/usr/local/bin/couchbase-cluster-setup.sh'
+  $node_init_lock               = '/opt/couchbase/var/.node_init'
+  $version                      = '3.0.1'
+  $edition                      = 'community'
+  $client_package               = 'libcouchbase2-libevent'
+  $download_url_base            = 'http://packages.couchbase.com/releases'
+  $ensure                       = 'present'
+  $autofailover                 = true
+  $data_dir                     = '/opt/couchbase/var/lib/couchbase/data'
+  $moxi_port                    = '11311'
+  $moxi_version                 = '2.5.0'
+  $disable_transparent_hugepage = true
 
   case $::osfamily {
     /(?i:centos|redhat|scientific)/: {
