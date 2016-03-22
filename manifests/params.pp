@@ -29,12 +29,17 @@ class couchbase::params {
 
   case $::osfamily {
     /(?i:centos|redhat|scientific)/: {
-      $openssl_package     = ['openssl098e']
+      if versioncmp($::operatingsystemmajrelease, '7') >= 0  {
+        $openssl_package     = ['openssl-libs']
+        $osname              = "centos7"
+      } else {
+        $openssl_package     = ['openssl098e']
+        $osname              = "centos6"
+      }
       $installer           = 'rpm'
       $pkgtype             = 'rpm'
       $development_package = 'libcouchbase-devel'
       $repository          = 'redhat'
-      $osname              = "centos6"
       $pkgarch             = '.x86_64'
       $pkgverspacer        = '-'
     }
