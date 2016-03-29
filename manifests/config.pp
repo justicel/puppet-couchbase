@@ -73,6 +73,7 @@ class couchbase::config (
     logoutput => true,
     tries     => 5,
     try_sleep => 10,
+    notify    => Exec ['couchbase-init'],
   }
 
 
@@ -106,6 +107,7 @@ class couchbase::config (
     tries       => 5,
     try_sleep   => 10,
     refreshonly => true,
+    notify      => Exec['couchbase-cluster-setup'],
   }
 
   # Initialize the cluster-building script
