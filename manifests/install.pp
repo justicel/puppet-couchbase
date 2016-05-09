@@ -35,6 +35,11 @@ class couchbase::install (
 
   $pkgsource = "${download_url_base}/${version}/${pkgname}"
 
+  $pkg_package = $edition ? {
+        'enterprise' => 'couchbase-server-enterprise',
+        default      => 'couchbase-server-community',
+    }
+
   case $method {
     'curl': {
       exec { 'download_couchbase':
@@ -42,18 +47,18 @@ class couchbase::install (
         creates => "/opt/${pkgname}",
         path    => ['/usr/bin','/usr/sbin','/bin','/sbin'],
       }
-      package {'couchbase-server':
+      package {$pkg_package:
         ensure   => installed,
-        name     => 'couchbase-server',
+        name     => $pkg_package,
         provider => $::couchbase::params::installer,
         require  => [Package[$::couchbase::params::openssl_package], Exec['download_couchbase']],
         source   => "/opt/${pkgname}",
       }
     }
     'package': {
-      package {'couchbase-server':
+      package {$pkg_package:
         ensure  => $::couchbase::version,
-        name    => 'couchbase-server',
+        name    => $pkg_package,
         require => Package[$::couchbase::params::openssl_package],
       }
     }
@@ -70,7 +75,7 @@ class couchbase::install (
           path    => '/usr/bin:/usr/local/bin',
           command => 'unlink /etc/init.d/couchbase-server && cp /opt/couchbase/etc/couchbase_init.d /etc/init.d/couchbase-server && systemctl daemon-reload',
           onlyif  => 'test -L /etc/init.d/couchbase-server',
-          require => Package['couchbase-server'],
+          require => Package[$pkg_package],
       }
     }
   }
@@ -85,7 +90,7 @@ class couchbase::install (
     ensure  => directory,
     recurse => true,
     owner   => 'couchbase',
-    require => Package['couchbase-server'],
+    require => Package[$pkg_package],
   }
 
 }
