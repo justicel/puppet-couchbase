@@ -73,7 +73,7 @@ class couchbase::config (
     logoutput => true,
     tries     => 5,
     try_sleep => 10,
-    notify    => Exec ['couchbase-init'],
+    notify    => Exec['couchbase-init'],
   }
 
 
