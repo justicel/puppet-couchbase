@@ -80,7 +80,7 @@ class couchbase::install (
     }
   }
 
-  if ! defined(Package["${::couchbase::params::openssl_package}"]) {
+  if !defined(Package[join($::couchbase::params::openssl_package,",")]) {
     ensure_packages($::couchbase::params::openssl_package)
   }
 
