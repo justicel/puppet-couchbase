@@ -45,7 +45,7 @@ class couchbase::config (
   concat { $::couchbase::params::node_init_script:
     owner => '0',
     group => '0',
-    mode  => '0655',
+    mode  => '0700',
   }
 
 
@@ -83,7 +83,7 @@ class couchbase::config (
   concat { $::couchbase::params::cluster_init_script:
     owner => '0',
     group => '0',
-    mode  => '0655',
+    mode  => '0700',
   }
 
   concat::fragment { '00_cluster_init_script_header':
@@ -114,7 +114,7 @@ class couchbase::config (
   concat { $::couchbase::params::cluster_script:
     owner => '0',
     group => '0',
-    mode  => '0655',
+    mode  => '0700',
   }
 
   concat::fragment { '00_script_header':
