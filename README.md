@@ -7,7 +7,7 @@ and automatically maintain the cluster.
 Usage
 -----
 
-Install a couchbase server with a standard user/password::
+Install a couchbase server with a standard user/password and create the [password-less](https://developer.couchbase.com/documentation/server/current/security/security-bucket-protection.html) `default` bucket:
 
     class { 'couchbase':
         size     => 1024,
@@ -16,7 +16,7 @@ Install a couchbase server with a standard user/password::
         version  => latest,
     }
 
-Create a couchbase bucket (Note the user/password)::
+Create additional buckets (Note the user/password):
 
     couchbase::bucket { 'memcached':
         port     => 11211,
@@ -27,7 +27,7 @@ Create a couchbase bucket (Note the user/password)::
         replica  => 1
     }
 
-Install the SDK for your language (currently supported ruby and python)::
+Install the SDK for your language (currently supported ruby and python):
 
     couchbase::client { 'ruby': }
 
