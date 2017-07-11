@@ -50,6 +50,7 @@ class couchbase::install (
         command => "curl -o /opt/${pkgname} ${pkgsource}",
         creates => "/opt/${pkgname}",
         path    => ['/usr/bin','/usr/sbin','/bin','/sbin'],
+        unless  => "test -e /opt/${pkgname}",
       }
 
       package {$pkg_package:
