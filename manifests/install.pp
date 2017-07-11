@@ -36,9 +36,13 @@ class couchbase::install (
   $pkgsource = "${download_url_base}/${version}/${pkgname}"
 
   $pkg_package = $edition ? {
-        'enterprise' => 'couchbase-server-enterprise',
-        default      => 'couchbase-server-community',
-    }
+    'enterprise' => "${version} ${method} ${::couchbase::params::installer}" ? {
+      '4.6.2 curl rpm' => 'couchbase-server',
+      default => 'couchbase-server-enterprise',
+    },
+
+    default      => 'couchbase-server-community',
+  }
 
   case $method {
     'curl': {
@@ -47,6 +51,7 @@ class couchbase::install (
         creates => "/opt/${pkgname}",
         path    => ['/usr/bin','/usr/sbin','/bin','/sbin'],
       }
+
       package {$pkg_package:
         ensure   => installed,
         name     => $pkg_package,
@@ -55,6 +60,7 @@ class couchbase::install (
         source   => "/opt/${pkgname}",
       }
     }
+
     'package': {
       package {$pkg_package:
         ensure  => $::couchbase::version,
@@ -62,6 +68,7 @@ class couchbase::install (
         require => Package[$::couchbase::params::openssl_package],
       }
     }
+
     default: {
       fail ("${module_name} install_method must be 'package' or 'curl'")
     }
