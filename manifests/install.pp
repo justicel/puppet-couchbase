@@ -20,9 +20,17 @@ class couchbase::install (
   $edition           = $couchbase::edition,
   $method            = $couchbase::install_method,
   $download_url_base = $couchbase::download_url_base,
-  $data_dir = $couchbase::data_dir
+  $data_dir          = $couchbase::data_dir,
+  $proxy_env 	     = $couchbase::proxy_env
 ) {
   include ::couchbase::params
+# Set environment http_proxy inside 'download_couchbase' 
+  if ( $proxy_env == undef ) {
+    $_proxy_env = []
+  }
+  else {
+    $_proxy_env = $proxy_env.map |$item| { $item }
+  }
 
   $pkgname_enterprise = "couchbase-server-enterprise${::couchbase::params::pkgverspacer}${version}-${::couchbase::params::osname}${::couchbase::params::pkgarch}.${::couchbase::params::pkgtype}"
   $pkgname_community = "couchbase-server-community${::couchbase::params::pkgverspacer}${version}-${::couchbase::params::osname}${::couchbase::params::pkgarch}.${::couchbase::params::pkgtype}"
@@ -43,14 +51,15 @@ class couchbase::install (
 
     default      => 'couchbase-server-community',
   }
-
+ 
   case $method {
     'curl': {
-      exec { 'download_couchbase':
-        command => "curl -o /opt/${pkgname} ${pkgsource}",
-        creates => "/opt/${pkgname}",
-        path    => ['/usr/bin','/usr/sbin','/bin','/sbin'],
-        unless  => "test -e /opt/${pkgname}",
+       exec { 'download_couchbase':
+         environment => $_proxy_env,
+         command => "curl -o /opt/${pkgname} ${pkgsource}",
+         creates => "/opt/${pkgname}",
+         path    => ['/usr/bin','/usr/sbin','/bin','/sbin'],
+         unless  => "test -e /opt/${pkgname}",
       }
 
       package {$pkg_package:
