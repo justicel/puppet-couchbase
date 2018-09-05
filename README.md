@@ -14,6 +14,7 @@ Install a couchbase server with a standard user/password and create the [passwor
         user     => 'couchbase',
         password => 'password',
         version  => latest,
+        proxy_env => ['http_proxy=http://<proxyhost>:3128', https_proxy=https://<proxyhost>:3128']
     }
 
 Create additional buckets (Note the user/password):

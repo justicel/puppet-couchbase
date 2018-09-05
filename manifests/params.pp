@@ -26,6 +26,7 @@ class couchbase::params {
   $data_dir            = '/opt/couchbase/var/lib/couchbase/data'
   $moxi_port           = '11311'
   $moxi_version        = '2.5.0'
+  $proxy_env	       = undef
 
   case $::osfamily {
     /(?i:centos|redhat|scientific)/: {

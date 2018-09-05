@@ -68,8 +68,9 @@ class couchbase
   $install_method    = 'curl',
   $autofailover      = $::couchbase::params::autofailover,
   $data_dir          = $::couchbase::params::data_dir,
-  $index_dir        = undef,
+  $index_dir         = undef,
   $download_url_base = $::couchbase::params::download_url_base,
+  $proxy_env         = undef
 ) inherits ::couchbase::params {
 
   validate_numeric($size)
@@ -83,6 +84,9 @@ class couchbase
   validate_string($ensure)
   validate_bool($autofailover)
   validate_absolute_path($data_dir)
+  if ($proxy_env) {
+    validate_array($proxy_env)
+  }
   if ($index_dir) {
     validate_absolute_path($index_dir)
   }
