@@ -45,7 +45,9 @@ class couchbase::install (
   }
 
   # Install package dependencies
-  ensure_packages($::couchbase::params::dependencies) ->
+  if ! defined(Package["${::couchbase::params::dependencies}"]) {
+    ensure_packages($::couchbase::params::dependencies)
+  } ->
 
   case $method {
     'curl': {
@@ -60,7 +62,7 @@ class couchbase::install (
         ensure   => installed,
         name     => $pkg_package,
         provider => $::couchbase::params::installer,
-        require  => [Package[$::couchbase::params::openssl_package], Exec['download_couchbase']],
+        require  => [Package[$::couchbase::params::openssl_package], Package[$::couchbase::params::dependencies], Exec['download_couchbase']],
         source   => "/opt/${pkgname}",
       }
     }
@@ -69,7 +71,7 @@ class couchbase::install (
       package {$pkg_package:
         ensure  => $::couchbase::version,
         name    => $pkg_package,
-        require => Package[$::couchbase::params::openssl_package],
+        require => [Package[$::couchbase::params::openssl_package], Package[$::couchbase::params::dependencies]]
       }
     }
 
