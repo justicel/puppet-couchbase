@@ -44,6 +44,9 @@ class couchbase::install (
     default      => 'couchbase-server-community',
   }
 
+  # Install package dependencies
+  ensure_packages($::couchbase::params::dependencies) ->
+
   case $method {
     'curl': {
       exec { 'download_couchbase':
