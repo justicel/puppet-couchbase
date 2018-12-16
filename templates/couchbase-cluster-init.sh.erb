@@ -1,8 +1,7 @@
 /opt/couchbase/bin/couchbase-cli cluster-init -c localhost:8091 \
---cluster-init-username=<%= @user %> --cluster-init-password='<%= @password %>' \
---cluster-init-port=8091 \
---cluster-init-ramsize=<%= @size %> \
--u <%= @user %> -p '<%= @password %>'
+--cluster-username=<%= @user %> --cluster-password='<%= @password %>' \
+--cluster-port=8091 \
+--cluster-ramsize=<%= @size %>
 # Init auto-failover settings for the cluster
 /opt/couchbase/bin/couchbase-cli setting-autofailover -c localhost:8091 \
 --user=<%= @user %> --password='<%= @password %>' \
