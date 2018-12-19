@@ -25,6 +25,7 @@
 
 class couchbase::config (
   $size         = 1024,
+  $services     = 'data',
   $user         = $::couchbase::user,
   $password     = $::couchbase::password,
   $server_group = 'default',

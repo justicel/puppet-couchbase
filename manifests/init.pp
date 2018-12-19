@@ -68,7 +68,8 @@ class couchbase
   $install_method    = 'curl',
   $autofailover      = $::couchbase::params::autofailover,
   $data_dir          = $::couchbase::params::data_dir,
-  $index_dir        = undef,
+  $index_dir         = undef,
+  $services          = "data", 
   $download_url_base = $::couchbase::params::download_url_base,
 ) inherits ::couchbase::params {
 
@@ -120,6 +121,7 @@ class couchbase
 
     class {'::couchbase::config':
       size         => $size,
+      services     => $services,
       user         => $user,
       password     => $password,
       server_group => $server_group,
