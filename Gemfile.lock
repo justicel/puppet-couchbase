@@ -255,7 +255,7 @@ GEM
       spdx-licenses (~> 1.0)
     method_source (0.8.2)
     mime-types (2.99)
-    mini_portile2 (2.0.0)
+    mini_portile2 (2.4.0)
     minitest (5.8.3)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
@@ -269,8 +269,8 @@ GEM
     net-ssh (2.9.2)
     net-telnet (0.1.1)
     netrc (0.11.0)
-    nokogiri (1.6.7.2)
-      mini_portile2 (~> 2.0.0.rc2)
+    nokogiri (1.9.1)
+      mini_portile2 (~> 2.4.0)
     notiffany (0.0.8)
       nenv (~> 0.1)
       shellany (~> 0.0)
@@ -442,4 +442,4 @@ DEPENDENCIES
   travis-lint
 
 BUNDLED WITH
-   1.11.2
+   1.13.6
