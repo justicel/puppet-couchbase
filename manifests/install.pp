@@ -45,7 +45,7 @@ class couchbase::install (
   }
 
   # Install package dependencies
-  if ! defined(Package["${::couchbase::params::dependencies}"]) {
+  if ! defined(Package[$::couchbase::params::dependencies]) {
     ensure_packages($::couchbase::params::dependencies)
   }
 
@@ -71,7 +71,7 @@ class couchbase::install (
       package {$pkg_package:
         ensure  => $::couchbase::version,
         name    => $pkg_package,
-        require => [Package[$::couchbase::params::openssl_package], Package[$::couchbase::params::dependencies]]
+        require => [Package[$::couchbase::params::openssl_package], Package[$::couchbase::params::dependencies]],
       }
     }
 
@@ -93,7 +93,7 @@ class couchbase::install (
     }
   }
 
-  if ! defined(Package["${::couchbase::params::openssl_package}"]) {
+  if ! defined(Package[$::couchbase::params::openssl_package]) {
     ensure_packages($::couchbase::params::openssl_package)
   }
 

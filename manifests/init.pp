@@ -69,7 +69,7 @@ class couchbase
   $autofailover      = $::couchbase::params::autofailover,
   $data_dir          = $::couchbase::params::data_dir,
   $index_dir         = undef,
-  $services          = "data", 
+  $services          = 'data',
   $download_url_base = $::couchbase::params::download_url_base,
 ) inherits ::couchbase::params {
 
