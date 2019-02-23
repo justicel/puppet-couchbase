@@ -69,7 +69,7 @@ class couchbase::config (
   exec { 'couchbase-node-init':
     path      => ['/opt/couchbase/bin', '/usr/bin', '/bin', '/sbin', '/usr/sbin' ],
     command   => $::couchbase::params::node_init_script,
-    require   => [ Class['couchbase::install'] ],
+    require   => [ Class['couchbase::install'], Concat::Fragment["${server_group}_couchbase_server_${name}_node_init"] ],
     creates   => $::couchbase::params::node_init_lock,
     logoutput => true,
     tries     => 5,
