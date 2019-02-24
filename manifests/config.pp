@@ -103,7 +103,7 @@ class couchbase::config (
   exec { 'couchbase-init':
     path        => ['/opt/couchbase/bin', '/usr/bin', '/bin', '/sbin', '/usr/sbin' ],
     command     => $::couchbase::params::cluster_init_script,
-    require     => [ Class['couchbase::install'], Concat['00_cluster_init_script_header'], Exec['couchbase-node-init']],
+    require     => [ Class['couchbase::install'], Concat[$::couchbase::params::cluster_init_script], Exec['couchbase-node-init']],
     logoutput   => true,
     tries       => 5,
     try_sleep   => 10,
