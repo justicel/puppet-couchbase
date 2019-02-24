@@ -91,19 +91,19 @@ class couchbase::config (
     target  => $::couchbase::params::cluster_init_script,
     order   => '01',
     content => template('couchbase/couchbase-cluster-setup.sh.erb'),
-  }
+  } ->
 
   concat::fragment { "${server_group}_couchbase_server_${name}_init":
       order   => "15-${server_group}-${::servername}-init",
       target  => $::couchbase::params::cluster_init_script,
       content => template('couchbase/couchbase-cluster-init.sh.erb'),
       notify  => Exec['couchbase-init'],
-  }
+  }->
 
   exec { 'couchbase-init':
     path        => ['/opt/couchbase/bin', '/usr/bin', '/bin', '/sbin', '/usr/sbin' ],
     command     => $::couchbase::params::cluster_init_script,
-    require     => [ Class['couchbase::install'], Concat::Fragment["${server_group}_couchbase_server_${name}_init"], Exec['couchbase-node-init']],
+    require     => [ Class['couchbase::install'], Concat['00_cluster_init_script_header'], Exec['couchbase-node-init']],
     logoutput   => true,
     tries       => 5,
     try_sleep   => 10,
