@@ -45,9 +45,7 @@ class couchbase::install (
   }
 
   # Install package dependencies
-  if ! defined(Package[$::couchbase::params::dependencies]) {
-    ensure_packages($::couchbase::params::dependencies)
-  }
+  ensure_packages($::couchbase::params::dependencies)
 
   case $method {
     'curl': {
