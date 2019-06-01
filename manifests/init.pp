@@ -73,11 +73,6 @@ class couchbase
   String                    $download_url_base = $::couchbase::params::download_url_base,
 ) inherits ::couchbase::params {
 
-  validate_absolute_path($data_dir)
-  if ($index_dir) {
-    validate_absolute_path($index_dir)
-  }
-
   # Define initialized node as a couchbase node (This will always be true
   # so this is a safe assumption to make.
   @@couchbase::couchbasenode { $nodename:
