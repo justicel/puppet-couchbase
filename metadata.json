@@ -1,6 +1,6 @@
 {
   "name": "jlondon-couchbase",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "author": "Justice London",
   "summary": "Puppet Couchbase module",
   "license": "Apache-2.0",
@@ -12,7 +12,6 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7"
       ]
@@ -20,7 +19,6 @@
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7"
       ]
@@ -33,25 +31,18 @@
       ]
     },
     {
-      "operatingsystem": "Scientific",
-      "operatingsystemrelease": [
-        "5",
-        "6"
-      ]
-    },
-    {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "6",
-        "7"
+        "8",
+        "9"
       ]
     },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "10.04",
-        "12.04",
-        "14.04"
+        "14.04",
+        "16.04",
+        "18.04"
       ]
     }
   ],

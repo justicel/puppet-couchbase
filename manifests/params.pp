@@ -17,8 +17,8 @@ class couchbase::params {
   $cluster_init_script = '/usr/local/bin/couchbase-cluster-init.sh'
   $cluster_script      = '/usr/local/bin/couchbase-cluster-setup.sh'
   $node_init_lock      = '/opt/couchbase/var/.node_init'
-  $version             = '3.0.1'
-  $edition             = 'community'
+  $version             = '6.0.1'
+  $edition             = 'enterprise'
   $client_package      = 'libcouchbase2-libevent'
   $download_url_base   = 'http://packages.couchbase.com/releases'
   $ensure              = 'present'
@@ -55,15 +55,21 @@ class couchbase::params {
       $dependencies    = ['python-httplib2']
       case $::operatingsystem {
         'Debian': {
-          $osname = 'debian7'
+          $osname = 'debian8'
         }
         'Ubuntu': {
           case $::operatingsystemrelease {
+            '18.04': {
+              $osname = 'ubuntu18.04'
+            }
+            '16.04': {
+              $osname = 'ubuntu16.04'
+            }
             '14.04': {
               $osname = 'ubuntu14.04'
             }
             default: {
-              $osname = 'ubuntu12.04'
+              $osname = 'ubuntu18.04'
             }
           }
         }

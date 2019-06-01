@@ -2,12 +2,11 @@ class { '::couchbase':
   size     => 256,
   user     => 'couchbase',
   password => 'password',
-  version  => '4.1.0',
+  version  => '6.0.1',
   edition  => 'enterprise',
 }
 
 couchbase::bucket { 'default':
-  port     => 11211,
   size     => 256,
   user     => 'couchbase',
   password => 'password',

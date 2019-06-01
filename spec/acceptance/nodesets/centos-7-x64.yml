@@ -3,8 +3,8 @@ HOSTS:
     roles:
       - master
     platform: el-7-x86_64
-    box: puppetlabs/centos-7.0-64-nocm
-    box_url: https://vagrantcloud.com/puppetlabs/boxes/centos-7.0-64-nocm
+    box: generic/centos7
+    box_url: https://app.vagrantup.com/generic/boxes/centos7
     hypervisor: vagrant
 CONFIG:
   log_level: verbose

@@ -1,0 +1,12 @@
+HOSTS:
+  ubuntu-1604-x64:
+    roles:
+      - master
+    platform: ubuntu-1604-amd64
+    box: generic/ubuntu1604
+    box_url: https://app.vagrantup.com/generic/boxes/ubuntu1604
+    hypervisor: vagrant
+
+CONFIG:
+  log_level: verbose
+  type: foss
