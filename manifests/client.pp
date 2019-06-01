@@ -13,9 +13,10 @@ define couchbase::client(
   include ::couchbase::params
   include ::couchbase::repository
 
+  Class['::couchbase::repository'] -> Package[$::couchbase::params::development_package]
+
   package { $::couchbase::params::development_package:
     ensure  => $package_ensure,
-    require => Class['::couchbase::repository'],
   }
 
   package { $::couchbase::params::client_package:
