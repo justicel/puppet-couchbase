@@ -57,37 +57,26 @@
 
 class couchbase
 (
-  $ensure            = 'present',
-  $size              = 512,
-  $user              = 'couchbase',
-  $password          = 'password',
-  $version           = $::couchbase::params::version,
-  $edition           = $::couchbase::params::edition,
-  $nodename          = $::fqdn,
-  $server_group      = 'default',
-  $install_method    = 'curl',
-  $autofailover      = $::couchbase::params::autofailover,
-  $data_dir          = $::couchbase::params::data_dir,
-  $index_dir         = undef,
-  $services          = 'data',
-  $download_url_base = $::couchbase::params::download_url_base,
+  Enum['present', 'absent'] $ensure            = 'present',
+  Integer                   $size              = 512,
+  String                    $user              = 'couchbase',
+  String                    $password          = 'password',
+  Numeric                   $version           = $::couchbase::params::version,
+  String                    $edition           = $::couchbase::params::edition,
+  String                    $nodename          = $::fqdn,
+  String                    $server_group      = 'default',
+  Enum['curl', 'package']   $install_method    = 'curl',
+  Bool                      $autofailover      = $::couchbase::params::autofailover,
+  String                    $data_dir          = $::couchbase::params::data_dir,
+  String                    $index_dir         = undef,
+  String                    $services          = 'data',
+  String                    $download_url_base = $::couchbase::params::download_url_base,
 ) inherits ::couchbase::params {
 
-  validate_numeric($size)
-  validate_string($user)
-  validate_string($password)
-  validate_string($version)
-  validate_string($edition)
-  validate_string($nodename)
-  validate_string($server_group)
-  validate_re($install_method, ['curl', 'package'])
-  validate_string($ensure)
-  validate_bool($autofailover)
   validate_absolute_path($data_dir)
   if ($index_dir) {
     validate_absolute_path($index_dir)
   }
-  validate_string($download_url_base)
 
   # Define initialized node as a couchbase node (This will always be true
   # so this is a safe assumption to make.
