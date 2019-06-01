@@ -11,12 +11,11 @@ define couchbase::client(
   $package_ensure = present
 ) {
   include ::couchbase::params
-  include ::couchbase::repository
-
-  Class['::couchbase::repository'] -> Package[$::couchbase::params::development_package]
+  contain ::couchbase::repository
 
   package { $::couchbase::params::development_package:
     ensure  => $package_ensure,
+    require => Class['::couchbase::repository'],
   }
 
   package { $::couchbase::params::client_package:
