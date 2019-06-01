@@ -11,8 +11,8 @@ class couchbase::repository {
   include ::couchbase::params
 
   case $::couchbase::params::repository {
-    'redhat': { include ::couchbase::repository::redhat }
-    'debian': { include ::couchbase::repository::debian }
+    'redhat': { contain ::couchbase::repository::redhat }
+    'debian': { contain ::couchbase::repository::debian }
     default: { }
   }
 }
