@@ -66,7 +66,7 @@ class couchbase
   String                    $nodename          = $::fqdn,
   String                    $server_group      = 'default',
   Enum['curl', 'package']   $install_method    = 'curl',
-  Bool                      $autofailover      = $::couchbase::params::autofailover,
+  Boolean                   $autofailover      = $::couchbase::params::autofailover,
   String                    $data_dir          = $::couchbase::params::data_dir,
   String                    $index_dir         = undef,
   String                    $services          = 'data',
