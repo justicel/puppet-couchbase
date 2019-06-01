@@ -61,7 +61,7 @@ class couchbase
   Integer                   $size              = 512,
   String                    $user              = 'couchbase',
   String                    $password          = 'password',
-  Regexp[/[0-9.]+/]         $version           = $::couchbase::params::version,
+  String[Regexp[/[0-9.]+/]] $version           = $::couchbase::params::version,
   String                    $edition           = $::couchbase::params::edition,
   String                    $nodename          = $::fqdn,
   String                    $server_group      = 'default',
