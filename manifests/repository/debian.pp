@@ -13,7 +13,7 @@ class couchbase::repository::debian {
     location => downcase('http://packages.couchbase.com/ubuntu'),
     repos    => "${::lsbdistcodename}/main",
     key      => {
-      id     => 'CD406E62',
+      id     => '136CD3BA884E3CB0E44E7A5BE905C770CD406E62',
       source => 'http://packages.couchbase.com/ubuntu/couchbase.key',
     },
     include  => {
