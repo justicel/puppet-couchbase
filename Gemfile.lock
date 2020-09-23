@@ -182,7 +182,7 @@ GEM
       websocket (~> 1.0)
     rainbow (2.2.2)
       rake
-    rake (11.3.0)
+    rake (12.3.3)
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
@@ -290,7 +290,7 @@ DEPENDENCIES
   puppet-lint-unquoted_string-check
   puppet-lint-version_comparison-check
   puppetlabs_spec_helper (= 2.2.0)
-  rake (= 11.3.0)
+  rake (= 12.3.3)
   rb-inotify (= 0.9.10)
   rspec (< 3.2.0)
   rspec-puppet (= 2.7.2)
