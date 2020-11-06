@@ -41,7 +41,7 @@ class couchbase::install (
       default => 'couchbase-server',
     },
 
-    default      => 'couchbase-server-community',
+    default      => 'couchbase-server',
   }
 
   # Install package dependencies
