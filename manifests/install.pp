@@ -36,7 +36,6 @@ class couchbase::install (
 
   if $download_url_override {
     $pkgsource = $download_url_override
-    $pkgsource = "${download_url_base}/${version}/${pkgname}"
   }
   else {
     $pkgsource = "${download_url_base}/${version}/${pkgname}"
