@@ -71,7 +71,7 @@ class couchbase
   $index_dir             = undef,
   $services              = 'data',
   $download_url_base     = $::couchbase::params::download_url_base,
-  $download_url_override = undef,
+  $download_url_override = '',
 ) inherits ::couchbase::params {
 
   validate_numeric($size)

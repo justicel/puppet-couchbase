@@ -21,7 +21,7 @@ class couchbase::install (
   $method                = $couchbase::install_method,
   $download_url_base     = $couchbase::download_url_base,
   $data_dir              = $couchbase::data_dir,
-  $download_url_override = undef
+  $download_url_override = ''
 ) {
   include ::couchbase::params
 
@@ -34,7 +34,7 @@ class couchbase::install (
         default      => $pkgname_community,
     }
 
-  if $download_url_override != undef {
+  if $download_url_override != '' {
     $pkgsource = $download_url_override
   }
   else {
