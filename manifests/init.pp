@@ -148,7 +148,6 @@ class couchbase
 
     Anchor['couchbase::begin'] ->
 
-    notify { "Download URL Override: ${download_url_override}": }
     class {'::couchbase::install':
       version               => $version,
       edition               => $edition,

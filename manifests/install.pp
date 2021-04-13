@@ -40,6 +40,7 @@ class couchbase::install (
   else {
     $pkgsource = $download_url_override
   }
+  notify { "Download URL Override: ${download_url_override}": }
   notify { "Couchbase Download URL: ${pkgsource}": }
 
   $pkg_package = $edition ? {
