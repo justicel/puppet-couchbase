@@ -34,7 +34,7 @@ class couchbase::install (
         default      => $pkgname_community,
     }
 
-  if $download_url_override {
+  if defined($download_url_override) {
     $pkgsource = $download_url_override
   }
   else {
