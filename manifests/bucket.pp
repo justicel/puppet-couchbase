@@ -67,7 +67,7 @@ define couchbase::bucket (
     }
 
     $create_command = $type ? {
-      'memcached' => $create_pwd,
+      'memcached' => $create_defaults,
       default     => "${create_pwd} --bucket-replica=${replica}"
     }
 
