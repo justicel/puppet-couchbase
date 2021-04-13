@@ -57,20 +57,21 @@
 
 class couchbase
 (
-  $ensure            = 'present',
-  $size              = 512,
-  $user              = 'couchbase',
-  $password          = 'password',
-  $version           = $::couchbase::params::version,
-  $edition           = $::couchbase::params::edition,
-  $nodename          = $::fqdn,
-  $server_group      = 'default',
-  $install_method    = 'curl',
-  $autofailover      = $::couchbase::params::autofailover,
-  $data_dir          = $::couchbase::params::data_dir,
-  $index_dir         = undef,
-  $services          = 'data',
-  $download_url_base = $::couchbase::params::download_url_base,
+  $ensure                = 'present',
+  $size                  = 512,
+  $user                  = 'couchbase',
+  $password              = 'password',
+  $version               = $::couchbase::params::version,
+  $edition               = $::couchbase::params::edition,
+  $nodename              = $::fqdn,
+  $server_group          = 'default',
+  $install_method        = 'curl',
+  $autofailover          = $::couchbase::params::autofailover,
+  $data_dir              = $::couchbase::params::data_dir,
+  $index_dir             = undef,
+  $services              = 'data',
+  $download_url_base     = $::couchbase::params::download_url_base,
+  $download_url_override = undef,
 ) inherits ::couchbase::params {
 
   validate_numeric($size)
@@ -148,9 +149,10 @@ class couchbase
     Anchor['couchbase::begin'] ->
 
     class {'::couchbase::install':
-      version           => $version,
-      edition           => $edition,
-      download_url_base => $download_url_base,
+      version               => $version,
+      edition               => $edition,
+      download_url_base     => $download_url_base,
+      download_url_override => $download_url_override,
     }
 
     ->

@@ -16,11 +16,12 @@
 # Copyright 2013 Justice London, unless otherwise noted.
 #
 class couchbase::install (
-  $version           = $couchbase::version,
-  $edition           = $couchbase::edition,
-  $method            = $couchbase::install_method,
-  $download_url_base = $couchbase::download_url_base,
-  $data_dir = $couchbase::data_dir
+  $version               = $couchbase::version,
+  $edition               = $couchbase::edition,
+  $method                = $couchbase::install_method,
+  $download_url_base     = $couchbase::download_url_base,
+  $data_dir              = $couchbase::data_dir,
+  $download_url_override = undef
 ) {
   include ::couchbase::params
 
@@ -33,7 +34,10 @@ class couchbase::install (
         default      => $pkgname_community,
     }
 
-  $pkgsource = "${download_url_base}/${version}/${pkgname}"
+  $pkgsource = $download_url_override ? {
+    $download_url_override => $download_url_override,
+    default                => "${download_url_base}/${version}/${pkgname}",
+  }
 
   $pkg_package = $edition ? {
     'enterprise' => "${version} ${method} ${::couchbase::params::installer}" ? {
