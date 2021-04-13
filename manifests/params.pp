@@ -59,6 +59,12 @@ class couchbase::params {
         }
         'Ubuntu': {
           case $::operatingsystemrelease {
+            '18.04': {
+              $osname = 'ubuntu18.04'
+            }
+            '16.04': {
+              $osname = 'ubuntu16.04'
+            }
             '14.04': {
               $osname = 'ubuntu14.04'
             }
