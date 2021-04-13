@@ -38,10 +38,10 @@ class couchbase::install (
   $pkg_package = $edition ? {
     'enterprise' => "${version} ${method} ${::couchbase::params::installer}" ? {
       '4.6.2 curl rpm' => 'couchbase-server',
-      default => 'couchbase-server-enterprise',
+      default => 'couchbase-server',
     },
 
-    default      => 'couchbase-server-community',
+    default      => 'couchbase-server',
   }
 
   # Install package dependencies
@@ -60,7 +60,11 @@ class couchbase::install (
         ensure   => installed,
         name     => $pkg_package,
         provider => $::couchbase::params::installer,
-        require  => [Package[$::couchbase::params::openssl_package], Package[$::couchbase::params::dependencies], Exec['download_couchbase']],
+        require  => [
+          Package[$::couchbase::params::openssl_package],
+          Package[$::couchbase::params::dependencies],
+          Exec['download_couchbase'],
+        ],
         source   => "/opt/${pkgname}",
       }
     }
@@ -91,7 +95,7 @@ class couchbase::install (
     }
   }
 
-  if ! defined(Package[$::couchbase::params::openssl_package]) {
+  if !defined(Package[join($::couchbase::params::openssl_package,",")]) {
     ensure_packages($::couchbase::params::openssl_package)
   }
 
