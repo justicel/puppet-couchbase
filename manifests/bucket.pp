@@ -58,12 +58,17 @@ define couchbase::bucket (
     Class['couchbase::service'] -> Couchbase::Bucket[$title]
 
     #Whether or not to use a bucket password. This probably can use a selector or similar.
-    $create_defaults = "-u ${user} -p '${password}' --bucket=${bucketname} --bucket-type=${type} --bucket-ramsize=${size} --bucket-replica=${replica} --enable-flush=${flush}"
+    $create_defaults = "-u ${user} -p '${password}' --bucket=${bucketname} --bucket-type=${type} --bucket-ramsize=${size} --enable-flush=${flush}"
     if $bucket_password {
-      $create_command = "${create_defaults} --bucket-password='${bucket_password}'"
+      $create_pwd = "${create_defaults} --bucket-password='${bucket_password}'"
     }
     else {
-      $create_command = $create_defaults
+      $create_pwd = $create_defaults
+    }
+
+    $create_command = $type ? {
+      'memcached' => $create_pwd,
+      default     => "${create_pwd} --bucket-replica=${replica}"
     }
 
     exec {"bucket-create-${bucketname}":
