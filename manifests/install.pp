@@ -34,9 +34,11 @@ class couchbase::install (
         default      => $pkgname_community,
     }
 
-  $pkgsource = $download_url_override ? {
-    $download_url_override => $download_url_override,
-    default                => "${download_url_base}/${version}/${pkgname}",
+  if $download_url_override {
+    $pkgsource = $download_url_override
+  }
+  else {
+    $pkgsource = "${download_url_base}/${version}/${pkgname}"
   }
 
   $pkg_package = $edition ? {
