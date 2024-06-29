@@ -6,12 +6,15 @@
 #
 # Alex Farcas <alex.farcas@gmail.com>
 #
-class couchbase::repository::debian {
+class couchbase::repository::debian (
+  $distribution = $::lsbdistcodename
+)
+{
   include ::couchbase::params
 
   apt::source { 'couchbase':
     location => downcase('http://packages.couchbase.com/ubuntu'),
-    repos    => "${::lsbdistcodename}/main",
+    repos    => "${distribution}/main",
     key      => {
       id     => 'CD406E62', 
       source => 'http://packages.couchbase.com/ubuntu/couchbase.key',
