@@ -16,7 +16,7 @@ class couchbase::repository::debian (
     location => downcase('http://packages.couchbase.com/ubuntu'),
     repos    => "${distribution}/main",
     key      => {
-      id     => 'CD406E62', 
+      id     => 'CD406E62',
       source => 'http://packages.couchbase.com/ubuntu/couchbase.key',
     },
     include  => {
