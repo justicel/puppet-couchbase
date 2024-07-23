@@ -1,4 +1,4 @@
-# == Class: couchbase::repository::debian
+#  == Class: couchbase::repository::debian
 #
 # Sets up the couchbase repo for debian distros
 #
@@ -14,6 +14,7 @@ class couchbase::repository::debian (
 
   apt::source { 'couchbase':
     location => downcase('http://packages.couchbase.com/ubuntu'),
+    release  => $distribution,
     repos    => "${distribution}/main",
     key      => {
       id     => 'CD406E62',
