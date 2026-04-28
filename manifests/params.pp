@@ -52,24 +52,36 @@ class couchbase::params {
       $repository      = 'debian'
       $pkgarch         = '_amd64'
       $pkgverspacer    = '_'
-      $dependencies    = ['python-httplib2']
       case $::operatingsystem {
         'Debian': {
           $osname = 'debian7'
+          $dependencies    = ['python-httplib2']
         }
         'Ubuntu': {
           case $::operatingsystemrelease {
+            '22.04': {
+              $osname = 'ubuntu22.04'
+              $dependencies    = ['python3-httplib2']
+            }
+            '20.04': {
+              $osname = 'ubuntu20.04'
+              $dependencies    = ['python-httplib2']
+            }
             '18.04': {
               $osname = 'ubuntu18.04'
+              $dependencies    = ['python-httplib2']
             }
             '16.04': {
               $osname = 'ubuntu16.04'
+              $dependencies    = ['python-httplib2']
             }
             '14.04': {
               $osname = 'ubuntu14.04'
+              $dependencies    = ['python-httplib2']
             }
             default: {
               $osname = 'ubuntu12.04'
+              $dependencies    = ['python-httplib2']
             }
           }
         }
