@@ -1,0 +1,38 @@
+---
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  spec:
+    name: "rake spec (Ruby ${{ matrix.ruby }}, Puppet ${{ matrix.puppet }})"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - ruby: '2.7'
+            puppet: '~> 3.8.0'
+    env:
+      PUPPET_GEM_VERSION: "${{ matrix.puppet }}"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "${{ matrix.ruby }}"
+
+      - name: Install dependencies
+        run: |
+          rm -f Gemfile.lock
+          gem install bundler -v '~> 1.17'
+          bundle _1.17.3_ install --jobs 4 --retry 3 --without development system_tests
+
+      - name: Run rspec-puppet unit tests
+        run: bundle _1.17.3_ exec rake spec
