@@ -57,10 +57,16 @@ define couchbase::bucket (
     Class['couchbase::config'] -> Couchbase::Bucket[$title]
     Class['couchbase::service'] -> Couchbase::Bucket[$title]
 
-    #Whether or not to use a bucket password. This probably can use a selector or similar.
-    $create_defaults = "-u ${user} -p '${password}' --bucket=${bucketname} --bucket-type=${type} --bucket-ramsize=${size} --enable-flush=${flush}"
+    # SECURITY (GH #42): the cluster/bucket passwords are exported through the
+    # command's environment (CB_PASSWORD / CB_BUCKET_PASSWORD) and referenced as
+    # shell variables so the secret never appears in the command string itself.
+    # Puppet always logs the literal command attribute when an Exec fails
+    # ("change from notrun ... failed: <command> returned 1"), and tagmail will
+    # e-mail that report, so an inlined password would be leaked in plaintext
+    # regardless of the logoutput setting.
+    $create_defaults = "-u ${user} -p \"\$CB_PASSWORD\" --bucket=${bucketname} --bucket-type=${type} --bucket-ramsize=${size} --enable-flush=${flush}"
     if $bucket_password {
-      $create_pwd = "${create_defaults} --bucket-password='${bucket_password}'"
+      $create_pwd = "${create_defaults} --bucket-password=\"\$CB_BUCKET_PASSWORD\""
     }
     else {
       $create_pwd = $create_defaults
@@ -71,13 +77,21 @@ define couchbase::bucket (
       default     => "${create_pwd} --bucket-replica=${replica}"
     }
 
+    # Only export the bucket password when one is actually configured.
+    $exec_environment = $bucket_password ? {
+      undef   => ["CB_PASSWORD=${password}"],
+      default => ["CB_PASSWORD=${password}", "CB_BUCKET_PASSWORD=${bucket_password}"],
+    }
+
     exec {"bucket-create-${bucketname}":
-      path      => ['/opt/couchbase/bin/', '/usr/bin/', '/bin', '/sbin', '/usr/sbin'],
-      command   => "couchbase-cli bucket-create -c 127.0.0.1 ${create_command}",
-      unless    => "couchbase-cli bucket-list -c 127.0.0.1 -u ${user} -p '${password}' | grep -x ${bucketname}",
-      require   => Class['couchbase::config'],
-      returns   => [0, 2],
-      logoutput => true,
+      path        => ['/opt/couchbase/bin/', '/usr/bin/', '/bin', '/sbin', '/usr/sbin'],
+      command     => "couchbase-cli bucket-create -c 127.0.0.1 ${create_command}",
+      unless      => "couchbase-cli bucket-list -c 127.0.0.1 -u ${user} -p \"\$CB_PASSWORD\" | grep -x ${bucketname}",
+      environment => $exec_environment,
+      provider    => shell,
+      require     => Class['couchbase::config'],
+      returns     => [0, 2],
+      logoutput   => on_failure,
     }
   }
   else {
